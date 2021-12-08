@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: core
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: core
+  template:
+    metadata:
+      labels:
+        app: core
+    spec:
+      containers:
+      - image: docker.io/tmaxcloudck/bookinfo-core:latest
+        name: core
+        envFrom:
+        - configMapRef:
+            name: config-dev
+        env:
+        - name: BOOK_RATING_URL
+          value: "http://book-rating:8080"
+        - name: DB_DATABASE
+          value: "bookcore"
+        ports:
+        - containerPort: 80
