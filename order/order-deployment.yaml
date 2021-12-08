@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+    spec:
+      containers:
+      - image: docker.io/tmaxcloudck/bookinfo-order:latest
+        name: order
+        env:
+        - name: BOOK_PAYMENT_URL
+          value: "http://book-payment:8080"
+        - name: DB_HOSTNAME
+          value: "192.168.9.131"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_DATABASE
+          value: "bookorder"
+        - name: DB_USER
+          value: "postgres"
+        - name: DB_PASS
+          value: "password"
+        - name: KAFKA_BOOTSTRAP_HOST
+          value: "book-kafka"
+        - name: KAFKA_BOOTSTRAP_PORT
+          value: "9092"
+        - name: JAEGER_AGENT_HOST
+          value: "book-jaeger"
+        - name : JAEGER_AGENT_PORT
+          value: "6831"
+        ports:
+        - containerPort: 80
