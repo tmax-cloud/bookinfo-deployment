@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm-core.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      {{- include "helm-core.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "helm-core.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        envFrom:
+        - configMapRef:
+            name: {{ .Values.configMap.name }}
+        env:
+        - name: BOOK_RATING_URL
+          value: "http://rating:8080"
+        - name: DB_DATABASE
+          value: "bookcore"
+        ports:
+        - containerPort: 80
