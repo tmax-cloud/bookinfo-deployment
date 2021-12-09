@@ -21,7 +21,7 @@ spec:
             name: config-dev
         env:
         - name: BOOK_RATING_URL
-          value: "http://book-rating:8080"
+          value: "http://rating:8080"
         - name: DB_DATABASE
           value: "bookcore"
         ports:

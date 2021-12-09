@@ -21,7 +21,7 @@ spec:
             name: config-dev
         env:
         - name: BOOK_PAYMENT_URL
-          value: "http://book-payment:8080"
+          value: "http://payment:8080"
         - name: DB_DATABASE
           value: "bookorder"
         ports:
