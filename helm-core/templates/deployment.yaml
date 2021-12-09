@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "helm-core.fullname" . }}
+  name: core
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
     matchLabels:
-      {{- include "helm-core.selectorLabels" . | nindent 6 }}
+      app: core
   template:
     metadata:
       labels:
-        {{- include "helm-core.selectorLabels" . | nindent 8 }}
+        app: core
     spec:
       containers:
-      - name: {{ .Chart.Name }}
+      - name: core
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         envFrom:
         - configMapRef:
