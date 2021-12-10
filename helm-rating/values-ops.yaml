@@ -1,0 +1,18 @@
+# Default values for helm-core.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+revisionHistoryLimit: 3
+
+image:
+  repository: docker.io/tmaxcloudck/bookinfo-rating
+  tag: latest
+
+service:
+  port: 8080
+  targetPort: 8080
+
+configMap:
+  name: config-ops

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: payment
+  template:
+    metadata:
+      labels:
+        app: payment
+    spec:
+      containers:
+      - image: docker.io/tmaxcloudck/bookinfo-payment:latest
+        name: payment
+        envFrom:
+        - configMapRef:
+            name: config-dev
+        env:
+        - name: BOOK_ORDER_URL
+          value: "http://order:8080"
+        - name: DB_DATABASE
+          value: "bookpayment"
+        ports:
+        - containerPort: 80
