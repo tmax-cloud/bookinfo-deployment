@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-staging
+  namespace: staging
+data:
+  DB_HOSTNAME: postgres
+  DB_PORT: "5432"
+  DB_USER: postgres
+  DB_PASS: password
+  KAFKA_BOOTSTRAP_HOST: kafka
+  KAFKA_BOOTSTRAP_PORT: "9092"
+  JAEGER_AGENT_HOST: jaeger
+  JAEGER_AGENT_PORT: "6831"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-ops
+  namespace: ops
+data:
+  DB_HOSTNAME: postgres
+  DB_PORT: "5432"
+  DB_USER: postgres
+  DB_PASS: password
+  KAFKA_BOOTSTRAP_HOST: kafka
+  KAFKA_BOOTSTRAP_PORT: "9092"
+  JAEGER_AGENT_HOST: jaeger
+  JAEGER_AGENT_PORT: "6831"
+---
