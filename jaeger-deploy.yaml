@@ -14,7 +14,7 @@ spec:
   - name: jaeger-tcp
     port: 16686
     targetPort: 16686
-    protocl: TCP
+    protocol: TCP
   selector:
     app: jaeger
 ---
