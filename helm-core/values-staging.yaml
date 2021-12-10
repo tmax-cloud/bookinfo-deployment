@@ -15,14 +15,4 @@ service:
   targetPort: 8080
 
 configMap:
-  name: bookinfo-staging
-  data:
-    db_hostname: 192.168.9.131
-    db_port: 5432
-    db_user: postgres
-    db_pass: password
-    kafka_bootstrap_host: kafka
-    kafka_bootstrap_port: 9092
-    jaeger_agent_host: 192.168.9.131
-    jaeger_agent_port: 6831
-
+  name: config-staging
