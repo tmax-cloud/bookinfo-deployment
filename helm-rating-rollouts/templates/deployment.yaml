@@ -9,7 +9,7 @@ spec:
     matchLabels:
       app: {{ .Values.appName }}
   minReadySeconds: 10
-  stategy:
+  strategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
