@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.appName }}
-  mainReadySeconds: 10
+  minReadySeconds: 10
   stategy:
     type: RollingUpdate
     rollingUpdate:
