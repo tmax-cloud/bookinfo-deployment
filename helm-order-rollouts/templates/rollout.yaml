@@ -12,7 +12,7 @@ spec:
       app: {{ .Values.appName }}
   strategy:
     canary:
-      maxSurge: "25%"
+      maxSurge: "20%"
       maxUnavailable: 0
       steps:
       - setWeight: 25
