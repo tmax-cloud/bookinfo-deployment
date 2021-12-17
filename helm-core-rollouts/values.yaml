@@ -9,7 +9,7 @@ revisionHistoryLimit: 3
 
 image:
   repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-core
-  tag: blue
+  tag: v0.0.1
 # tag: green
 
 service:
