@@ -8,9 +8,9 @@ replicaCount: 5
 revisionHistoryLimit: 3
 
 image:
-  repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-order
-  tag: v0.0.1
-# tag: green
+  repository: core.hr.172.22.11.16.nip.io/library/bookinfo-order
+  tag: v0.0.5
+  # tag: green
 
 service:
   port: 8080
