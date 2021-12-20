@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ .Values.appName }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.order.replicas }}
+  revisionHistoryLimit: {{ .Values.order.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+{{ include "bookinfo.matchLabels" . | indent 6 }}
+      component: order
+  strategy:
+    canary:
+      maxSurge: "20%"
+      maxUnavailable: 0
+      steps:
+      - setWeight: 25
+      - pause: {}
+  template:
+    metadata:
+      labels:
+{{ include "bookinfo.matchLabels" . | indent 8 }}
+        component: order
+    spec:
+      containers:
+        - name: order
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          envFrom:
+          - configMapRef:
+              name: {{ template "bookinfo.order" . }}
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+          volumeMounts:
+            - name: conf
+              mountPath: /app/application.properties
+              subPath: application.properties
+      volumes:
+        - name: conf
+          configMap:
+            name: {{ template "bookinfo.order" . }}
+            items:
+              - key: application.properties
+                path: application.properties

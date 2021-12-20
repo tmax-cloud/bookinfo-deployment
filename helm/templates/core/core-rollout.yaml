@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name:  {{ template "bookinfo.core" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+    component: core
+spec:
+  replicas: {{ .Values.core.replicas }}
+  revisionHistoryLimit: {{ .Values.core.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+{{ include "bookinfo.matchLabels" . | indent 6 }}
+      component: core
+  strategy:
+    blueGreen:
+      activeService: {{ .Values.appName }}
+      previewService: {{ .Values.appName }}-preview
+  template:
+    metadata:
+      labels:
+{{ include "bookinfo.matchLabels" . | indent 8 }}
+    component: core
+    spec:
+      containers:
+        - name: core
+          image: "{{ .Values.core.image.repository }}:{{ .Values.core.image.tag }}"
+          envFrom:
+          - configMapRef:
+              name: {{ template "bookinfo.core" . }}
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: conf
+              mountPath: /app/application.properties
+              subPath: application.properties
+      volumes:
+        - name: conf
+          configMap:
+            name: {{ template "bookinfo.core" . }}
+            items:
+              - key: application.properties
+                path: application.properties

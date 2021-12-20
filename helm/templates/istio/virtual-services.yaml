@@ -1,0 +1,45 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bookinfo
+spec:
+  hosts:
+  - {{ .Values.externalDomain }}
+  gateways:
+  - {{ template "bookinfo.istio-ingressgateway" . }}
+  http:
+  - name: core
+    match:
+    - uri:
+        prefix: /api/books
+    route:
+    - destination:
+        host: {{ template "bookinfo.core" . }}
+        port:
+          number: 8080
+  - name: rating
+    match:
+    - uri:
+        prefix: /api/rating
+    route:
+    - destination:
+        host:{{ template "bookinfo.rating" . }}
+        port:
+          number: 8080
+        subset: v1
+      weight: 50
+    - destination:
+        host: {{ template "bookinfo.rating" . }}
+        port:
+          number: 8080
+        subset: v2
+      weight: 50
+  - name: orders
+    match:
+    - uri:
+        prefix: /api/orders
+    route:
+    - destination:
+        host: {{ template "bookinfo.order" . }}
+        port:
+          number: 8080

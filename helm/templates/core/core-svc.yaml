@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  {{ template "bookinfo.core" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  ports:
+  - port: {{ template "harbor.core.servicePort" . }}
+    targetPort: {{ template "harbor.core.containerPort" . }}
+  selector:
+    {{ include "bookinfo.matchLabels" . | indent 4 }}
+    component: core
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  {{ template "bookinfo.core" . }}-preview
+  labels:
+  {{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  ports:
+  - port: {{ template "harbor.core.servicePort" . }}
+    targetPort: {{ .Values.service.targetPort }}
+  selector:
+    {{ include "bookinfo.matchLabels" . | indent 4 }}
+    component: core

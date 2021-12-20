@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "bookinfo.database" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+{{ include "bookinfo.matchLabels" . | indent 6 }}
+      component: database
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+{{ include "bookinfo.matchLabels" . | indent 8 }}
+        component: rating
+    spec:
+      containers:
+        - name: {{ .Values.appName }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.configMap.name }}
+          env:
+            - name: DB_DATABASE
+              value: "bookrating"
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: app-properties
+              mountPath: /app/application.properties
+              subPath: application.properties
+      volumes:
+        - name: app-properties
+          configMap:
+            name: {{ template "harbor.rating" . }}
