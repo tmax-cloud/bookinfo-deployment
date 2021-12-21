@@ -7,8 +7,8 @@ replicaCount: 1
 revisionHistoryLimit: 3
 
 image:
-  repository: docker.io/tmaxcloudck/bookinfo-rating
-  tag: latest
+  repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-core
+  tag: v0.0.4
 
 service:
   port: 8080
