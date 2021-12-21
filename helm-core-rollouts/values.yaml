@@ -8,8 +8,8 @@ replicaCount: 2
 revisionHistoryLimit: 3
 
 image:
-  repository: core.hr.172.22.11.16.nip.io/library/bookinfo-core
-  tag: v0.0.5
+  repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-core
+  tag: v0.0.4
   # tag: green
 
 service:
