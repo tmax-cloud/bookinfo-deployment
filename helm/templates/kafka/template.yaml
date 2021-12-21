@@ -2,6 +2,8 @@ apiVersion: tmax.io/v1
 kind: ClusterTemplate
 metadata:
   name: kafka-single-template
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
 shortDescription: "Kafka Single Deployment"
 longDescription: "1 Kafka 1 Zookeeper No SSL Only In-cluster Deployment"
 urlDescription: https://kafka.apache.org/

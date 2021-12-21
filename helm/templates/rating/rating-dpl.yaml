@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ template "bookinfo.rating" . }}
   labels:
-  {{ include "bookinfo.labels" . | indent 4 }}
+{{ include "bookinfo.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.rating.replicas }}
   revisionHistoryLimit: {{ .Values.rating.revisionHistoryLimit }}
@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: rating
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        image: "{{ .Values.rating.image.repository }}:{{ .Values.rating.image.tag }}"
         envFrom:
         - configMapRef:
             name: {{ template "bookinfo.rating" . }}

@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "bookinfo.database" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
 spec:
   replicas: 1
   selector:
@@ -18,24 +20,9 @@ spec:
     metadata:
       labels:
 {{ include "bookinfo.matchLabels" . | indent 8 }}
-        component: rating
+        component: database
     spec:
       containers:
-        - name: {{ .Values.appName }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          envFrom:
-            - configMapRef:
-                name: {{ .Values.configMap.name }}
-          env:
-            - name: DB_DATABASE
-              value: "bookrating"
-          ports:
-            - containerPort: 80
-          volumeMounts:
-            - name: app-properties
-              mountPath: /app/application.properties
-              subPath: application.properties
-      volumes:
-        - name: app-properties
-          configMap:
-            name: {{ template "harbor.rating" . }}
+        - name: database
+          image: "{{ .Values.database.image.repository }}:{{ .Values.database.image.tag }}"
+          

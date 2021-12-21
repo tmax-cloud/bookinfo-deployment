@@ -2,6 +2,8 @@ apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
   name: ratings
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
 spec:
   host: bookinfo-rating
   subsets:

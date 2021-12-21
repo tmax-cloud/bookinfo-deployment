@@ -2,9 +2,11 @@ apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
 metadata:
   name: external-payment
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
 spec:
   hosts:
-  - {{ .Values.upstream.payment }}
+    - {{ template "bookinfo.upstream.payment" . }}
   location: MESH_EXTERNAL
   ports:
   - name: http

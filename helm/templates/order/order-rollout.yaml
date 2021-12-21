@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: {{ .Values.appName }}
+  name: {{ template "bookinfo.order" . }}
   labels:
 {{ include "bookinfo.labels" . | indent 4 }}
 spec:
@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: order
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.order.image.repository }}:{{ .Values.order.image.tag }}"
           envFrom:
           - configMapRef:
               name: {{ template "bookinfo.order" . }}

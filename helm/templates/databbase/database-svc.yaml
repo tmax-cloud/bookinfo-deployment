@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: {{ template "bookinfo.database" . }}
   labels:
-  {{ include "bookinfo.labels" . | indent 4 }}
+{{ include "bookinfo.labels" . | indent 4 }}
 spec:
   ports:
     - port: 5432
   selector:
-    {{ include "bookinfo.matchLabels" . | indent 4 }}
+{{ include "bookinfo.matchLabels" . | indent 4 }}
     component: database

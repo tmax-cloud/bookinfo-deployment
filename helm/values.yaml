@@ -5,9 +5,10 @@
 externalDomain: bookinfo.172.22.11.21.nip.io
 
 istio:
-  gateway:
+  ingressGateway:
     selector:
-      app: istio-gateway
+      key: app
+      value: istio-gateway
 
 core:
   image:
@@ -38,13 +39,9 @@ order:
 
 database:
   image:
-    repository: core.hr.172.22.11.16.nip.io/library/bookinfo-database
+    repository: core.hr.172.22.11.16.nip.io/library/bookinfo-db
     tag: v0.0.5
     # tag: green
-
-service:
-  port: 8080
-  targetPort: 8080
 
 kafka:
   bootstrapServers: "bookinfo-kafka:9092"

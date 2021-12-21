@@ -2,7 +2,7 @@
 Expand the name of the chart.
 */}}
 {{- define "bookinfo.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- default "bookinfo" .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end }}
 
 {{/*
@@ -34,9 +34,8 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "bookinfo.labels" -}}
-heritage: {{ .Release.Service }}
-release: {{ .Release.Name }}
 chart: {{ .Chart.Name }}
+release: {{ .Release.Name }}
 app: "{{ template "bookinfo.name" . }}"
 {{- end }}
 
@@ -44,7 +43,15 @@ app: "{{ template "bookinfo.name" . }}"
 {{- define "bookinfo.matchLabels" -}}
 release: {{ .Release.Name }}
 app: "{{ template "bookinfo.name" . }}"
-{{- end -}}
+{{- end }}
+
+{{- define "bookinfo.istio.ingressGatwayMatchLabels" -}}
+  {{ printf "%s: %s" .Values.istio.ingressGateway.selector.key .Values.istio.ingressGateway.selector.value }}
+{{- end }}
+
+{{- define "bookinfo.upstream.payment" -}}
+  {{ .Values.upstream.paymentURL | toString | regexFind "//.*:" | trimAll "/:" }}
+{{- end }}
 
 {{/*
 Create the name of the service account to use
@@ -77,11 +84,8 @@ Create the name of the service account to use
   {{- printf "%s-gateway" (include "bookinfo.fullname" .) -}}
 {{- end -}}
 
-
-{{/**/
-}}
 {{- define "bookinfo.database.url" -}}
-  {{- printf "jdbc:postgresql//%s/" (include "bookinfo.database" .) -}}
+  {{- printf "jdbc:postgresql://%s:5432" (include "bookinfo.database" .) -}}
 {{- end -}}
 
 {{- define "bookinfo.database.username" -}}
@@ -128,7 +132,6 @@ Create the name of the service account to use
   {{- printf "8080" -}}
 {{- end -}}
 
-{{/**/}}
 {{- define "bookinfo.coreURL" -}}
   {{- printf "%s://%s:%s" (include "bookinfo.component.scheme" .) (include "bookinfo.core" .) (include "bookinfo.core.servicePort" .) -}}
 {{- end -}}

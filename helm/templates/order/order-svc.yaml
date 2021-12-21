@@ -1,11 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "harbor.order" . }}
+  name: {{ template "bookinfo.order" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
 spec:
   ports:
-  - port: {{ template "harbor.order.servicePort" . }}
-    targetPort: {{ template "harbor.order.containerPort" . }}
+  - port: {{ template "bookinfo.order.servicePort" . }}
+    targetPort: {{ template "bookinfo.order.containerPort" . }}
   selector:
-    {{ include "bookinfo.matchLabels" . | indent 4 }}
+{{ include "bookinfo.matchLabels" . | indent 4 }}
     component: order

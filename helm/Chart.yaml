@@ -1,5 +1,5 @@
 apiVersion: v2
-name: Bookinfo
+name: bookinfo
 description: A Helm chart for Book Info MSA application
 
 # A chart can be either an 'application' or a 'library' chart.
