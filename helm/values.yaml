@@ -8,7 +8,7 @@ istio:
   ingressGateway:
     selector:
       key: app
-      value: istio-gateway
+      value: istio-ingressgateway
 
 core:
   image:

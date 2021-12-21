@@ -50,7 +50,11 @@ app: "{{ template "bookinfo.name" . }}"
 {{- end }}
 
 {{- define "bookinfo.upstream.payment" -}}
-  {{ .Values.upstream.paymentURL | toString | regexFind "//.*:" | trimAll "/:" }}
+{{- if regexMatch "//.*:" ( .Values.upstream.paymentURL | toString ) }}
+  {{- .Values.upstream.paymentURL | toString | regexFind "//.*:" | trimAll "/:" -}}
+{{- else if regexMatch "//.*" ( .Values.upstream.paymentURL | toString ) }}
+  {{- .Values.upstream.paymentURL | toString | regexFind "//.*" | trimAll "/" -}}
+{{- end }}
 {{- end }}
 
 {{/*
