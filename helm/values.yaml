@@ -42,14 +42,36 @@ database:
     repository: core.hr.172.22.11.16.nip.io/library/bookinfo-db
     tag: v0.0.5
     # tag: green
+  # resources:
+  #  requests:
+  #    memory: 256Mi
+  #    cpu: 100m
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
 
 kafka:
   bootstrapServers: "bookinfo-kafka:9092"
   groupId: "book"
 
 upstream:
-  paymentURL: "http://bookinfo-payment.book-ext:8080"
+  paymentURL: "http://192.168.9.71.nip.io"
 
 trace:
   jaeger:
     httpSenderURL: "http://jaeger-collector.istio-system:14268/api/traces"
+
+persistence:
+  enabled: true
+  # Setting it to "keep" to avoid removing PVCs during a helm delete
+  # operation. Leaving it empty will delete PVCs after the chart deleted
+  # (this does not apply for PVCs that are created for internal database
+  # and redis components, i.e. they are never deleted automatically)
+  resourcePolicy: "keep"
+  persistentVolumeClaim:
+    database:
+      existingClaim: ""
+      storageClass: "csi-cephfs-sc"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 1Gi

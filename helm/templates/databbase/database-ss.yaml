@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "bookinfo.database" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  replicas: 1
+  serviceName: "{{ template "bookinfo.database" . }}"
+  selector:
+    matchLabels:
+{{ include "bookinfo.matchLabels" . | indent 6 }}
+      component: database
+  template:
+    metadata:
+      labels:
+{{ include "bookinfo.matchLabels" . | indent 8 }}
+        component: database
+    spec:
+      containers:
+        - name: database
+          image: "{{ .Values.database.image.repository }}:{{ .Values.database.image.tag }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          livenessProbe:
+            exec:
+              command:
+                - /docker-healthcheck.sh
+            initialDelaySeconds: 300
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+                - /docker-healthcheck.sh
+            initialDelaySeconds: 1
+            periodSeconds: 10
+          volumeMounts:
+          - name: database-data
+            mountPath: /var/lib/postgresql/data
+            subPath: {{ .Values.persistence.persistentVolumeClaim.database.subPath }}
+  volumeClaimTemplates:
+    - metadata:
+        name: "database-data"
+        labels:
+{{ include "bookinfo.labels" . | indent 10 }}
+      spec:
+        accessModes: [{{ .Values.persistence.persistentVolumeClaim.database.accessMode | quote }}]
+        {{- if .Values.persistence.persistentVolumeClaim.database.storageClass }}
+        {{- if (eq "-" .Values.persistence.persistentVolumeClaim.database.storageClass) }}
+        storageClassName: ""
+        {{- else }}
+        storageClassName: "{{ .Values.persistence.persistentVolumeClaim.database.storageClass }}"
+        {{- end }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.persistentVolumeClaim.database.size | quote }}
