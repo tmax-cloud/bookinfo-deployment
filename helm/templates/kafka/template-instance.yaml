@@ -1,32 +1,31 @@
+{{- if eq .Values.eventing.type "internal" -}}
 apiVersion: tmax.io/v1
 kind: TemplateInstance
 metadata:
-  name: bookinfo-kafka
+  name: {{ template "bookinfo.kafka.templateInstance" . }}
   labels:
 {{ include "bookinfo.labels" . | indent 4 }}
-  annotations:
-    template-version: 5.0.4
-    tested-operator-version: 0.2.1
 spec:
   clustertemplate:
     metadata:
-      name: kafka-single-template
+      name: {{ template "bookinfo.kafka.template" . }}
     parameters:
     - name: APP_NAME
-      value: bookinfo
+      value: {{ template "bookinfo.fullname" . }}
     - name: IS_EXTERNAL
       value: "true"
     - name: KAFKA_STORAGE
-      value: 5Gi
+      value: {{ .Values.persistence.persistentVolumeClaim.kafka.size }}
     - name: STORAGE_CLASS
-      value: csi-cephfs-sc
+      value: {{ .Values.persistence.persistentVolumeClaim.kafka.storageClass }}
     - name: KAFKA_RESOURCE_CPU
-      value: 1
+      value: {{ .Values.eventing.internal.kafka.resources.requests.cpu }}
     - name: KAFKA_RESOURCE_MEM
-      value: 1Gi
+      value: {{ .Values.eventing.internal.kafka.resources.requests.memory }}
     - name: ZOOKEEPER_RESOURCE_CPU
-      value: 1
+      value: {{ .Values.eventing.internal.zookeeper.resources.requests.cpu }}
     - name: ZOOKEEPER_RESOURCE_MEM
-      value: 1Gi
+      value: {{ .Values.eventing.internal.zookeeper.resources.requests.cpu }}
     - name: DEFAULT_TOPIC
       value: tmax
+{{- end -}}

@@ -13,18 +13,54 @@ istio:
       key: app
       value: istio-ingressgateway
 
+eventing:
+  type: internal
+  internal:
+    kubectl:
+      image:
+        repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo-3rd-party/kubectl
+        tag: 1.20.10
+    zookeeper:
+      image:
+        repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo-3rd-party/zookeeper
+        tag: 3.4.6
+      resources:
+        requests:
+          cpu: 1
+          memory: 1Gi
+    kafka:
+      image:
+        repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo-3rd-party/kafka
+        tag: 2.12-2.0.1
+      resources:
+        requests:
+          cpu: 1
+          memory: 1Gi
+  external:
+    kafka:
+      bootstrapServers: ""
+      consumer:
+        groupId: ""
+
+trace:
+  jaeger:
+    httpSenderURL: "http://jaeger-collector.istio-system:14268/api/traces"
+
 core:
   image:
     repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-core
-    tag: v0.0.5
+    tag: v0.0.4
   revisionHistoryLimit: 3
   serviceAccountName: ""
   replicas: 1
+  rolloutPolicy:
+    canary:
+      ratio: 50
 
 rating:
   image:
     repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-rating
-    tag: v0.0.5
+    tag: v0.0.4
   revisionHistoryLimit: 3
   serviceAccountName: ""
   replicas: 1
@@ -35,27 +71,21 @@ rating:
 order:
   image:
     repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-order
-    tag: v0.0.5
+    tag: v0.0.4
   revisionHistoryLimit: 3
   serviceAccountName: ""
   replicas: 1
+  rolloutPolicy:
+    canary:
+      ratio: 50
 
 database:
   image:
     repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-db
-    tag: v0.0.5
+    tag: v0.0.4
   nodeSelector: {}
   tolerations: []
   affinity: {}
-
-
-kafka:
-  bootstrapServers: "bookinfo-kafka:9092"
-  groupId: "book"
-
-trace:
-  jaeger:
-    httpSenderURL: "http://jaeger-collector.istio-system:14268/api/traces"
 
 persistence:
   enabled: true

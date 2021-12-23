@@ -1,7 +1,8 @@
+{{- if eq .Values.eventing.type "internal" -}}
 apiVersion: tmax.io/v1
 kind: ClusterTemplate
 metadata:
-  name: kafka-single-template
+  name: {{ template "bookinfo.kafka.template" . }}
   labels:
 {{ include "bookinfo.labels" . | indent 4 }}
 shortDescription: "Kafka Single Deployment"
@@ -151,7 +152,7 @@ objects:
       spec:
         containers:
         - name: ${APP_NAME}-zookeeper
-          image: wurstmeister/zookeeper:3.4.6
+          image: {{ .Values.eventing.internal.zookeeper.image.repository }}:{{ .Values.eventing.internal.zookeeper.image.tag }}
           env:
             - name: ALLOW_ANONYMOUS_LOGIN
               value: "yes"
@@ -176,7 +177,7 @@ objects:
         serviceAccountName: ${APP_NAME}-kafka-account
         initContainers:
         - name: parse-svc
-          image: docker.io/bitnami/kubectl:1.20.10
+          image: {{ .Values.eventing.internal.kubectl.image.repository }}:{{ .Values.eventing.internal.kubectl.image.tag }}
           volumeMounts:
           - name: shared
             mountPath: /tmp/shared
@@ -209,7 +210,7 @@ objects:
             fi
         containers:
         - name: ${APP_NAME}-kafka
-          image: wurstmeister/kafka:2.12-2.0.1
+          image: {{ .Values.eventing.internal.kafka.image.repository }}:{{ .Values.eventing.internal.kafka.image.tag }}
           command:
           - /bin/sh
           - -c
@@ -264,3 +265,4 @@ objects:
             claimName: ${APP_NAME}-kafka-pvc
         - name: shared
           emptyDir: {}
+{{- end -}}

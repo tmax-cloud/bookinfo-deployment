@@ -120,12 +120,32 @@ Create the name of the service account to use
   {{- printf "%s" "password" -}}
 {{- end -}}
 
+{{- define "bookinfo.kafka" -}}
+  {{- printf "%s-kafka" (include "bookinfo.fullname" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.kafka.template" -}}
+  {{- printf "%s-template" (include "bookinfo.fullname" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.kafka.templateInstance" -}}
+  {{- printf "%s-templateinstance" (include "bookinfo.fullname" .) -}}
+{{- end -}}
+
 {{- define "bookinfo.kafka.bootstrapServers" -}}
- {{ .Values.kafka.bootstrapServers -}}
+  {{- if eq .Values.eventing.type "internal" -}}
+    {{- printf "%s:9092" (include "bookinfo.kafka" .) -}}
+  {{- else -}}
+    {{ .Values.eventing.external.kafka.bootstrapServers -}}
+  {{- end -}}
 {{- end -}}
 
 {{- define "bookinfo.kafka.groupId" -}}
-  {{ .Values.kafka.groupId -}}
+  {{- if eq .Values.eventing.type "internal" -}}
+    {{- printf "%s" "book" -}}
+  {{- else -}}
+    {{ .Values.eventing.external.kafka.consumer.groupId -}}
+  {{- end -}}
 {{- end -}}
 
 {{- define "bookinfo.component.scheme" -}}
