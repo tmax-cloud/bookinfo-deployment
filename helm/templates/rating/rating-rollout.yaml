@@ -20,7 +20,7 @@ spec:
             routes:
               - rating
           destinationRule:
-            name: {{ template "bookinfo.istio.destRule" . }}
+            name: {{ template "bookinfo.istio.destRule" . }}-rating
             canarySubsetName: {{ template "bookinfo.istio.destRule.canaryName" . }}
             stableSubsetName: {{ template "bookinfo.istio.destRule.stableName" . }}
       steps:

@@ -1,11 +1,11 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: {{ template "bookinfo.istio.destRule" . }}
+  name: {{ template "bookinfo.istio.destRule" . }}-core
   labels:
 {{ include "bookinfo.labels" . | indent 4 }}
 spec:
-  host: {{ template "bookinfo.rating" . }}
+  host: {{ template "bookinfo.core" . }}
   subsets:
   - name: {{ template "bookinfo.istio.destRule.stableName" . }}
     labels:
@@ -13,3 +13,35 @@ spec:
   - name: {{ template "bookinfo.istio.destRule.canaryName" . }}
     labels:
       version: v2
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "bookinfo.istio.destRule" . }}-order
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  host: {{ template "bookinfo.order" . }}
+  subsets:
+    - name: {{ template "bookinfo.istio.destRule.stableName" . }}
+      labels:
+        version: v1
+    - name: {{ template "bookinfo.istio.destRule.canaryName" . }}
+      labels:
+        version: v2
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "bookinfo.istio.destRule" . }}-rating
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  host: {{ template "bookinfo.rating" . }}
+  subsets:
+    - name: {{ template "bookinfo.istio.destRule.stableName" . }}
+      labels:
+        version: v1
+    - name: {{ template "bookinfo.istio.destRule.canaryName" . }}
+      labels:
+        version: v2

@@ -13,9 +13,21 @@ spec:
 {{ include "bookinfo.matchLabels" . | indent 6 }}
       component: core
   strategy:
-    blueGreen:
-      activeService: {{ template "bookinfo.core" . }}
-      previewService: {{ template "bookinfo.core" . }}-preview
+    canary:
+      trafficRouting:
+        istio:
+          virtualService:
+            name: {{ template "bookinfo.istio.virtualService" . }}
+            routes:
+              - rating
+          destinationRule:
+            name: {{ template "bookinfo.istio.destRule" . }}-core
+            canarySubsetName: {{ template "bookinfo.istio.destRule.canaryName" . }}
+            stableSubsetName: {{ template "bookinfo.istio.destRule.stableName" . }}
+      steps:
+        - setWeight: 5
+        - pause:
+            duration: 10m
   template:
     metadata:
       labels:
