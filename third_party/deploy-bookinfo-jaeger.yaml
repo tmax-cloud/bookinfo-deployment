@@ -3,8 +3,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: jaeger
-  name: jaeger
+    app: bookinfo-jaeger
+  name: bookinfo-jaeger
 spec:
   ports:
   - name: jaeger-udp
@@ -16,28 +16,28 @@ spec:
     targetPort: 16686
     protocol: TCP
   selector:
-    app: jaeger
+    app: bookinfo-jaeger
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: jaeger
-  name: jaeger
+    app: bookinfo-jaeger
+  name: bookinfo-jaeger
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jaeger
+      app: bookinfo-jaeger
   template:
     metadata:
       labels:
-        app: jaeger
+        app: bookinfo-jaeger
     spec:
       containers:
       - image: jaegertracing/all-in-one:latest
         imagePullPolicy: IfNotPresent
-        name: jaeger
+        name: bookinfo-jaeger
         ports:
         - containerPort: 6831
           name: jaeger-udp

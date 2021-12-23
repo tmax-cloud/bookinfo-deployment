@@ -2,20 +2,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: bookinfo-db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: bookinfo-db
   template:
     metadata:
       labels:
-        app: postgres
+        app: bookinfo-db
     spec:
       containers:
-      - name: postgres
-        image: docker.io/tmaxcloudck/bookinfo-db:v0.0.2
+      - name: bookinfo-db
+        image: docker.io/tmaxcloudck/bookinfo-db:v0.0.5
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5432
@@ -23,13 +23,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres
+  name: bookinfo-db
   labels:
-    app: postgres
+    app: bookinfo-db
 spec:
   type: NodePort
   ports:
   - port: 5432
   selector:
-    app: postgres
+    app: bookinfo-db
 ---
