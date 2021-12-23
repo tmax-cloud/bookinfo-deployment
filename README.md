@@ -29,6 +29,40 @@
 3. 서드 파티들 설치 (더 쉽게 인스톨 할 수 있는 방법 고안할 예정)
     * 'third-party'안에 있는 manifest들을 "kubectl apply -f <manifest명>" 으로 staging, ops 네임스페이스에 각각 설치
 
-## 가이드 (작성 중)
+## ARGOCD UI 시연 가이드
 1. ArgoCD 서버에 접속한다. 
-2. 각 Micro Service들의 Application을 생성한다
+2. 왼쪽 상단에 "+ NEW APP" 버튼을 눌러 각 Micro Service들의 Application을 생성.
+
+![image](https://user-images.githubusercontent.com/36444454/147192193-e2614f3d-4343-4893-98a9-5cf65e1bf7fe.png)
+
+3. 각 항목을 다음 처럼 채우고, 왼쪽 상단에 Create을 클릭한다. 
+
+![image](https://user-images.githubusercontent.com/36444454/147192376-ee98fe0a-0517-4e8c-9462-11236c825321.png)
+
+* GENERAL
+  * Application Name : 각 서비스 이름과 phase를 조합해서 네이밍할 것
+    * core-staging, core-ops, order-staging, order-ops ...
+    * 유의 : Application 이름들이 중복될 수 없음
+  * Project 
+    * 시연 시, default 기입
+  * SYNC POLICY
+    * 시연 시, AUTOMATIC 선택
+    * 유의 : AUTOMATIC을 선택해도, manifest가 바뀔 시 바로 sync가 맞춰지지는 않음. repo pull 방식으로 3분 마다 맞춰짐. 즉시 반영을 원한다면 사용자가 직접 git 웹훅을 등록하는 방법도 있음.
+
+* SOURCE
+  * Repository URL : manifest가 담긴 레포의 주소
+    * 시연 시, https://github.com/tmax-cloud/bookinfo-deployment.git로 기입
+  * Revision : repo의 브랜치나 태그, commit SHA
+    * 시연 시, main으로 기입
+  * Path : manifest 경로
+    * 마우스로 빈칸을 클릭하면, 해당 repo에 있는 subdirectory들을 드롭다운 형식으로 보여줌
+    * 시연하고자 하는 경로 클릭 or 기입
+
+* DESTINATION
+  * Cluster URL
+    * 시연 시, https://kubernetes.default.svc
+  * Namespace
+    * 시연 시, staging, ops로 각각 한벌씩 만들 것
+    * 유의 : 이미 해당 클러스터 내에 staging, ops라는 namespace가 존재해야 함. 없다면 "kubectl create ns staging", "kubectl create ns ops"로 만들 것
+
+4. 정상적으로 작동되고 있는지 확인
