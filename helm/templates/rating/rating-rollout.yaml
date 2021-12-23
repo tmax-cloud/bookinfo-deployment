@@ -1,0 +1,59 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ template "bookinfo.rating" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.rating.replicas }}
+  revisionHistoryLimit: {{ .Values.rating.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+{{ include "bookinfo.matchLabels" . | indent 6 }}
+      component: rating
+  strategy:
+    canary:
+      trafficRouting:
+        istio:
+          virtualService:
+            name: {{ template "bookinfo.istio.virtualService" . }}
+            routes:
+              - rating
+          destinationRule:
+            name: {{ template "bookinfo.istio.destRule" . }}
+            canarySubsetName: {{ template "bookinfo.istio.destRule.canaryName" . }}
+            stableSubsetName: {{ template "bookinfo.istio.destRule.stableName" . }}
+      steps:
+        - setWeight: 5
+        - pause:
+            duration: 10m
+  template:
+    metadata:
+      labels:
+{{ include "bookinfo.matchLabels" . | indent 8 }}
+        component: rating
+    spec:
+      containers:
+        - name: rating
+          image: "{{ .Values.rating.image.repository }}:{{ .Values.rating.image.tag }}"
+          envFrom:
+            - configMapRef:
+                name: {{ template "bookinfo.rating" . }}
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+          volumeMounts:
+            - name: conf
+              mountPath: /app/application.properties
+              subPath: application.properties
+      volumes:
+        - name: conf
+          configMap:
+            name: {{ template "bookinfo.rating" . }}
+            items:
+              - key: application.properties
+                path: application.properties
+

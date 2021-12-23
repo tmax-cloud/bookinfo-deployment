@@ -84,8 +84,28 @@ Create the name of the service account to use
   {{- printf "%s-database" (include "bookinfo.fullname" .) -}}
 {{- end -}}
 
-{{- define "bookinfo.istio-ingressgateway" -}}
-  {{- printf "%s-gateway" (include "bookinfo.fullname" .) -}}
+{{- define "bookinfo.istio.ingressGateway" -}}
+  {{- printf "%s-ingressgateway" (include "bookinfo.fullname" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.istio.egressGateway" -}}
+  {{- printf "%s-egressgateway" (include "bookinfo.fullname" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.istio.virtualService" -}}
+  {{- printf "%s" (include "bookinfo.fullname" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.istio.destRule" -}}
+  {{- printf "%s" (include "bookinfo.fullname" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.istio.destRule.stableName" -}}
+  {{- printf "%s" "stable" -}}
+{{- end -}}
+
+{{- define "bookinfo.istio.destRule.canaryName" -}}
+  {{- printf "%s" "cannary" -}}
 {{- end -}}
 
 {{- define "bookinfo.database.url" -}}

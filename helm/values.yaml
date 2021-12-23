@@ -4,6 +4,9 @@
 
 externalDomain: bookinfo.172.22.11.21.nip.io
 
+upstream:
+  paymentURL: "http://192.168.9.71.nip.io"
+
 istio:
   ingressGateway:
     selector:
@@ -12,50 +15,43 @@ istio:
 
 core:
   image:
-    repository: core.hr.172.22.11.16.nip.io/library/bookinfo-core
+    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-core
     tag: v0.0.5
-    # tag: green
   revisionHistoryLimit: 3
   serviceAccountName: ""
   replicas: 1
 
 rating:
   image:
-    repository: core.hr.172.22.11.16.nip.io/library/bookinfo-rating
+    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-rating
     tag: v0.0.5
-    # tag: green
   revisionHistoryLimit: 3
   serviceAccountName: ""
   replicas: 1
+  rolloutPolicy:
+    canary:
+      ratio: 50
 
 order:
   image:
-    repository: core.hr.172.22.11.16.nip.io/library/bookinfo-order
+    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-order
     tag: v0.0.5
-    # tag: green
   revisionHistoryLimit: 3
   serviceAccountName: ""
   replicas: 1
 
 database:
   image:
-    repository: core.hr.172.22.11.16.nip.io/library/bookinfo-db
+    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-db
     tag: v0.0.5
-    # tag: green
-  # resources:
-  #  requests:
-  #    memory: 256Mi
-  #    cpu: 100m
   nodeSelector: {}
   tolerations: []
   affinity: {}
 
+
 kafka:
   bootstrapServers: "bookinfo-kafka:9092"
   groupId: "book"
-
-upstream:
-  paymentURL: "http://192.168.9.71.nip.io"
 
 trace:
   jaeger:
@@ -70,6 +66,12 @@ persistence:
   resourcePolicy: "keep"
   persistentVolumeClaim:
     database:
+      existingClaim: ""
+      storageClass: "csi-cephfs-sc"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 1Gi
+    kafka:
       existingClaim: ""
       storageClass: "csi-cephfs-sc"
       subPath: ""
