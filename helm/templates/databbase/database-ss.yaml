@@ -28,7 +28,7 @@ spec:
       - name: "data-permissions-ensurer"
         image: {{ .Values.database.image.repository }}:{{ .Values.database.image.tag }}
         command: [ "/bin/sh" ]
-        args: [ "-c", "chmod 700 /var/lib/postgresql/data/pgdata || true" ]
+        args: [ "-c", "chmod 700 /var/lib/postgresql/data/pg13 || true" ]
         volumeMounts:
           - name: database-data
             mountPath: /var/lib/postgresql/data
