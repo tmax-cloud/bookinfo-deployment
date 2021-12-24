@@ -60,7 +60,7 @@ core:
 rating:
   image:
     repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-rating
-    tag: v0.0.4
+    tag: v0.0.2
   revisionHistoryLimit: 3
   serviceAccountName: ""
   replicas: 1
