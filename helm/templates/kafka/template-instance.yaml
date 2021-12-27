@@ -6,26 +6,30 @@ metadata:
   labels:
 {{ include "bookinfo.labels" . | indent 4 }}
 spec:
-  clustertemplate:
+  template:
     metadata:
       name: {{ template "bookinfo.kafka.template" . }}
     parameters:
     - name: APP_NAME
       value: {{ template "bookinfo.fullname" . }}
-    - name: IS_EXTERNAL
-      value: "true"
     - name: KAFKA_STORAGE
       value: {{ .Values.persistence.persistentVolumeClaim.kafka.size }}
     - name: STORAGE_CLASS
       value: {{ .Values.persistence.persistentVolumeClaim.kafka.storageClass }}
-    - name: KAFKA_RESOURCE_CPU
+    - name: KAFKA_RES_REQ_CPU
       value: {{ .Values.eventing.internal.kafka.resources.requests.cpu }}
-    - name: KAFKA_RESOURCE_MEM
+    - name: KAFKA_RES_REQ_MEM
       value: {{ .Values.eventing.internal.kafka.resources.requests.memory }}
-    - name: ZOOKEEPER_RESOURCE_CPU
+    - name: KAFKA_RES_LIMIT_CPU
+      value: {{ .Values.eventing.internal.kafka.resources.limits.cpu }}
+    - name: KAFKA_RES_LIMIT_MEM
+      value: {{ .Values.eventing.internal.kafka.resources.limits.memory }}
+    - name: ZOOKEEPER_RES_REQ_CPU
       value: {{ .Values.eventing.internal.zookeeper.resources.requests.cpu }}
-    - name: ZOOKEEPER_RESOURCE_MEM
-      value: {{ .Values.eventing.internal.zookeeper.resources.requests.cpu }}
-    - name: DEFAULT_TOPIC
-      value: tmax
+    - name: ZOOKEEPER_RES_REQ_MEM
+      value: {{ .Values.eventing.internal.zookeeper.resources.requests.memory }}
+    - name: ZOOKEEPER_RES_LIMIT_CPU
+      value: {{ .Values.eventing.internal.zookeeper.resources.limits.cpu }}
+    - name: ZOOKEEPER_RES_LIMIT_MEM
+      value: {{ .Values.eventing.internal.zookeeper.resources.limits.memory }}
 {{- end -}}

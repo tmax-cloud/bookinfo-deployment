@@ -26,16 +26,22 @@ eventing:
         tag: 3.4.6
       resources:
         requests:
+          cpu: 250m
+          memory: 750m
+        limits:
           cpu: 1
-          memory: 1Gi
+          memory: 2Gi
     kafka:
       image:
         repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo-3rd-party/kafka
         tag: 2.12-2.0.1
       resources:
         requests:
+          cpu: 250m
+          memory: 750m
+        limits:
           cpu: 1
-          memory: 1Gi
+          memory: 2Gi
   external:
     kafka:
       bootstrapServers: ""
@@ -106,4 +112,4 @@ persistence:
       storageClass: "csi-cephfs-sc"
       subPath: ""
       accessMode: ReadWriteOnce
-      size: 5Gi
+      size: 20Gi
