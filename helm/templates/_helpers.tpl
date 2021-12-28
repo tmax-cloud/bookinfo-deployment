@@ -49,6 +49,10 @@ app: "{{ template "bookinfo.name" . }}"
   {{ printf "%s: %s" .Values.istio.ingressGateway.selector.key .Values.istio.ingressGateway.selector.value }}
 {{- end }}
 
+{{- define "bookinfo.istio.egressGatwayMatchLabels" -}}
+  {{ printf "%s: %s" .Values.istio.egressGateway.selector.key .Values.istio.egressGateway.selector.value }}
+{{- end }}
+
 {{- define "bookinfo.upstream.payment" -}}
 {{- if regexMatch "//.*:" ( .Values.upstream.paymentURL | toString ) }}
   {{- .Values.upstream.paymentURL | toString | regexFind "//.*:" | trimAll "/:" -}}

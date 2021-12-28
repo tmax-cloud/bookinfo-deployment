@@ -45,3 +45,14 @@ spec:
     - name: {{ template "bookinfo.istio.destRule.canaryName" . }}
       labels:
         version: v2
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "bookinfo.istio.destRule" . }}-payment
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  host: istio-egressgateway.istio-system.svc.cluster.local
+  subsets:
+    - name: payment

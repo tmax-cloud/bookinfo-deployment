@@ -12,6 +12,10 @@ istio:
     selector:
       key: app
       value: istio-ingressgateway
+  egressGateway:
+    selector:
+      key: app
+      value: istio-egressgateway
 
 eventing:
   type: internal
