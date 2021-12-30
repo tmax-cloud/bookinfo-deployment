@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: {{ template "bookinfo.rating" . }}
+  name: {{ template "bookinfo.rating.destinationRule" . }}
   labels:
 {{ include "bookinfo.labels" . | indent 4 }}
 spec:
@@ -12,4 +12,4 @@ spec:
         version: v1
     - name: {{ template "bookinfo.istio.destRule.canaryName" . }}
       labels:
-        version: v
+        version: v2

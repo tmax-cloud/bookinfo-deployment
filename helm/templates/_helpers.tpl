@@ -195,3 +195,35 @@ Create the name of the service account to use
 {{- define "bookinfo.orderURL" -}}
   {{- printf "%s://%s:%s" (include "bookinfo.component.scheme" .) (include "bookinfo.order" .) (include "bookinfo.order.servicePort" .) -}}
 {{- end -}}
+
+{{- define "bookinfo.core.virtualservice" -}}
+  {{- printf "%s-vs" (include "bookinfo.core" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.rating.virtualservice" -}}
+  {{- printf "%s-vs" (include "bookinfo.rating" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.order.virtualservice" -}}
+  {{- printf "%s-vs" (include "bookinfo.order" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.payment.virtualservice" -}}
+  {{- printf "%s-vs" (include "bookinfo.payment" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.core.destinationRule" -}}
+  {{- printf "%s-dest-rule" (include "bookinfo.core" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.rating.destinationRule" -}}
+  {{- printf "%s-dest-rule" (include "bookinfo.rating" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.order.destinationRule" -}}
+  {{- printf "%s-dest-rule" (include "bookinfo.order" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.payment.destinationRule" -}}
+  {{- printf "%s-dest-rule" (include "bookinfo.payment" .) -}}
+{{- end -}}

@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: {{ template "bookinfo.order" . }}
+  name: {{ template "bookinfo.order.destinationRule" . }}
   labels:
 {{ include "bookinfo.labels" . | indent 4 }}
 spec:

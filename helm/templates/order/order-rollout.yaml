@@ -16,11 +16,11 @@ spec:
       trafficRouting:
         istio:
           virtualService:
-            name: {{ template "bookinfo.order" . }}
+            name: {{ template "bookinfo.order.virtualservice" . }}
             routes:
               - orders
           destinationRule:
-            name: {{ template "bookinfo.order" . }}
+            name: {{ template "bookinfo.order.destinationRule" . }}
             canarySubsetName: {{ template "bookinfo.istio.destRule.canaryName" . }}
             stableSubsetName: {{ template "bookinfo.istio.destRule.stableName" . }}
       steps:
