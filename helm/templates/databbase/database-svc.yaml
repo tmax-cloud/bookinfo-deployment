@@ -10,3 +10,4 @@ spec:
   selector:
 {{ include "bookinfo.matchLabels" . | indent 4 }}
     component: database
+  clusterIP: None
