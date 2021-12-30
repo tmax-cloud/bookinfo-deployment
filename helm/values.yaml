@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-externalDomain: bookinfo.172.22.11.21.nip.io
+externalDomain: bookinfo.192.168.0.102.nip.io
 
 upstream:
   paymentURL: "http://192.168.9.71.nip.io"
@@ -16,6 +16,7 @@ istio:
     selector:
       key: app
       value: istio-egressgateway
+    hostname: istio-egressgateway.istio-system.svc.cluster.local
 
 eventing:
   type: internal
@@ -107,13 +108,13 @@ persistence:
   persistentVolumeClaim:
     database:
       existingClaim: ""
-      storageClass: "csi-cephfs-sc"
+      storageClass: ""
       subPath: ""
       accessMode: ReadWriteOnce
       size: 1Gi
     kafka:
       existingClaim: ""
-      storageClass: "csi-cephfs-sc"
+      storageClass: "rook-cephfs"
       subPath: ""
       accessMode: ReadWriteOnce
-      size: 20Gi
+      size: 10Gi

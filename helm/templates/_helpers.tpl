@@ -88,6 +88,10 @@ Create the name of the service account to use
   {{- printf "%s-database" (include "bookinfo.fullname" .) -}}
 {{- end -}}
 
+{{- define "bookinfo.payment" -}}
+  {{- printf "%s-payment" (include "bookinfo.fullname" .) -}}
+{{- end -}}
+
 {{- define "bookinfo.istio.ingressGateway" -}}
   {{- printf "%s-ingressgateway" (include "bookinfo.fullname" .) -}}
 {{- end -}}
