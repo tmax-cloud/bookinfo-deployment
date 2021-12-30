@@ -36,6 +36,7 @@ spec:
       containers:
         - name: rating
           image: "{{ .Values.rating.image.repository }}:{{ .Values.rating.image.tag }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           envFrom:
             - configMapRef:
                 name: {{ template "bookinfo.rating" . }}

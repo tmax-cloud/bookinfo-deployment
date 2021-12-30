@@ -37,6 +37,7 @@ spec:
       containers:
         - name: core
           image: "{{ .Values.core.image.repository }}:{{ .Values.core.image.tag }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           envFrom:
           - configMapRef:
               name: {{ template "bookinfo.core" . }}

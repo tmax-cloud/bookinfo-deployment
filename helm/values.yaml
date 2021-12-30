@@ -118,3 +118,5 @@ persistence:
       subPath: ""
       accessMode: ReadWriteOnce
       size: 10Gi
+
+imagePullPolicy: Always

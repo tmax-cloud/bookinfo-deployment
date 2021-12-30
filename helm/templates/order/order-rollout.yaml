@@ -36,6 +36,7 @@ spec:
       containers:
         - name: order
           image: "{{ .Values.order.image.repository }}:{{ .Values.order.image.tag }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           envFrom:
           - configMapRef:
               name: {{ template "bookinfo.order" . }}
