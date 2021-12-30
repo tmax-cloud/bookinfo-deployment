@@ -11,3 +11,17 @@ spec:
   selector:
 {{ include "bookinfo.matchLabels" . | indent 4 }}
     component: core
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  {{ template "bookinfo.core" . }}-canary
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  ports:
+    - port: {{ template "bookinfo.core.servicePort" . }}
+      targetPort: {{ template "bookinfo.core.containerPort" . }}
+  selector:
+{{ include "bookinfo.matchLabels" . | indent 4 }}
+    component: core

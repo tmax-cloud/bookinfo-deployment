@@ -19,11 +19,9 @@ spec:
             host: {{ template "bookinfo.rating" . }}
             port:
               number: 8080
-            subset: {{ template "bookinfo.istio.destRule.stableName" . }}
           weight: {{ sub 100 .Values.rating.rolloutPolicy.canary.ratio }}
         - destination:
-            host: {{ template "bookinfo.rating" . }}
+            host: {{ template "bookinfo.rating" . }}-canary
             port:
               number: 8080
-            subset: {{ template "bookinfo.istio.destRule.canaryName" . }}
           weight: {{ .Values.rating.rolloutPolicy.canary.ratio }}

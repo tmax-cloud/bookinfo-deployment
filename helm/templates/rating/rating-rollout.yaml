@@ -13,16 +13,14 @@ spec:
       component: rating
   strategy:
     canary:
+      canaryService: {{ template "bookinfo.rating" . }}-canary
+      stableService: {{ template "bookinfo.rating" . }}
       trafficRouting:
         istio:
           virtualService:
             name: {{ template "bookinfo.rating.virtualservice" . }}
             routes:
               - rating
-          destinationRule:
-            name: {{ template "bookinfo.rating.destinationRule" . }}
-            canarySubsetName: {{ template "bookinfo.istio.destRule.canaryName" . }}
-            stableSubsetName: {{ template "bookinfo.istio.destRule.stableName" . }}
       steps:
         - setWeight: 5
         - pause:

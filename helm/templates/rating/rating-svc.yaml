@@ -11,3 +11,17 @@ spec:
   selector:
 {{ include "bookinfo.matchLabels" . | indent 4 }}
     component: rating
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "bookinfo.rating" . }}-canary
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  ports:
+    - port: {{ template "bookinfo.rating.servicePort" . }}
+      targetPort: {{ template "bookinfo.rating.containerPort" . }}
+  selector:
+{{ include "bookinfo.matchLabels" . | indent 4 }}
+    component: rating

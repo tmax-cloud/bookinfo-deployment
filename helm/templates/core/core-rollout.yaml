@@ -14,16 +14,14 @@ spec:
       component: core
   strategy:
     canary:
+      canaryService: {{ template "bookinfo.core" . }}-canary
+      stableService: {{ template "bookinfo.core" . }}
       trafficRouting:
         istio:
           virtualService:
             name: {{ template "bookinfo.core.virtualservice" . }}
             routes:
               - core
-          destinationRule:
-            name: {{ template "bookinfo.core.destinationRule" . }}
-            canarySubsetName: {{ template "bookinfo.istio.destRule.canaryName" . }}
-            stableSubsetName: {{ template "bookinfo.istio.destRule.stableName" . }}
       steps:
         - setWeight: 5
         - pause:
