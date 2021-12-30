@@ -212,6 +212,14 @@ Create the name of the service account to use
   {{- printf "%s-vs" (include "bookinfo.payment" .) -}}
 {{- end -}}
 
+{{- define "bookinfo.database.virtualservice" -}}
+  {{- printf "%s-vs" (include "bookinfo.database" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.kafka.virtualservice" -}}
+  {{- printf "%s-vs" (include "bookinfo.kafka" .) -}}
+{{- end -}}
+
 {{- define "bookinfo.core.destinationRule" -}}
   {{- printf "%s-dest-rule" (include "bookinfo.core" .) -}}
 {{- end -}}
