@@ -1,3 +1,22 @@
+{{- if eq .Values.eventing.type "internal" -}}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ template "bookinfo.zookeeper.virtualservice" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  hosts:
+    - {{ template "bookinfo.zookeeper" . }}
+  tcp:
+    - match:
+        - port: {{ template "bookinfo.zookeeper.servicePort" . }}
+      route:
+        - destination:
+            host: {{ template "bookinfo.zookeeper" . }}
+            port:
+              number: {{ template "bookinfo.zookeeper.containerPort" . }}
+---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -9,9 +28,10 @@ spec:
     - {{ template "bookinfo.kafka" . }}
   tcp:
     - match:
-        - port: 9092
+        - port: {{ template "bookinfo.kafka.servicePort" . }}
       route:
         - destination:
             host: {{ template "bookinfo.kafka" . }}
             port:
-              number: 9092
+              number: {{ template "bookinfo.kafka.containerPort" . }}
+{{- end -}}

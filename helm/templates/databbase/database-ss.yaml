@@ -4,6 +4,7 @@ metadata:
   name: {{ template "bookinfo.database" . }}
   labels:
 {{ include "bookinfo.labels" . | indent 4 }}
+    component: database
 spec:
   replicas: 1
   serviceName: "{{ template "bookinfo.database" . }}"

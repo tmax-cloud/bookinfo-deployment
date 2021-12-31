@@ -88,6 +88,14 @@ Create the name of the service account to use
   {{- printf "%s-database" (include "bookinfo.fullname" .) -}}
 {{- end -}}
 
+{{- define "bookinfo.zookeeper" -}}
+  {{- printf "%s-zookeeper" (include "bookinfo.fullname" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.kafka" -}}
+  {{- printf "%s-kafka" (include "bookinfo.fullname" .) -}}
+{{- end -}}
+
 {{- define "bookinfo.payment" -}}
   {{- printf "%s-payment" (include "bookinfo.fullname" .) -}}
 {{- end -}}
@@ -126,10 +134,6 @@ Create the name of the service account to use
 
 {{- define "bookinfo.database.password" -}}
   {{- printf "%s" "password" -}}
-{{- end -}}
-
-{{- define "bookinfo.kafka" -}}
-  {{- printf "%s-kafka" (include "bookinfo.fullname" .) -}}
 {{- end -}}
 
 {{- define "bookinfo.kafka.template" -}}
@@ -184,6 +188,30 @@ Create the name of the service account to use
   {{- printf "8080" -}}
 {{- end -}}
 
+{{- define "bookinfo.database.containerPort" -}}
+  {{- printf "5432" -}}
+{{- end -}}
+
+{{- define "bookinfo.database.servicePort" -}}
+  {{- printf "5432" -}}
+{{- end -}}
+
+{{- define "bookinfo.zookeeper.containerPort" -}}
+  {{- printf "2181" -}}
+{{- end -}}
+
+{{- define "bookinfo.zookeeper.servicePort" -}}
+  {{- printf "2181" -}}
+{{- end -}}
+
+{{- define "bookinfo.kafka.containerPort" -}}
+  {{- printf "9092" -}}
+{{- end -}}
+
+{{- define "bookinfo.kafka.servicePort" -}}
+  {{- printf "9092" -}}
+{{- end -}}
+
 {{- define "bookinfo.coreURL" -}}
   {{- printf "%s://%s:%s" (include "bookinfo.component.scheme" .) (include "bookinfo.core" .) (include "bookinfo.core.servicePort" .) -}}
 {{- end -}}
@@ -194,6 +222,18 @@ Create the name of the service account to use
 
 {{- define "bookinfo.orderURL" -}}
   {{- printf "%s://%s:%s" (include "bookinfo.component.scheme" .) (include "bookinfo.order" .) (include "bookinfo.order.servicePort" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.kafka.advertisedListners" -}}
+  {{- printf "INSIDE://%s:%s" (include "bookinfo.kafka" .) (include "bookinfo.kafka.containerPort" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.kafka.listners" -}}
+  {{- printf "INSIDE://0.0.0.0:%s"  (include "bookinfo.kafka.containerPort" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.zookeeperURL" -}}
+  {{- printf "%s:%s" (include "bookinfo.zookeeper" .) (include "bookinfo.zookeeper.containerPort" .) -}}
 {{- end -}}
 
 {{- define "bookinfo.core.virtualservice" -}}
@@ -214,6 +254,10 @@ Create the name of the service account to use
 
 {{- define "bookinfo.database.virtualservice" -}}
   {{- printf "%s-vs" (include "bookinfo.database" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.zookeeper.virtualservice" -}}
+  {{- printf "%s-vs" (include "bookinfo.zookeeper" .) -}}
 {{- end -}}
 
 {{- define "bookinfo.kafka.virtualservice" -}}
