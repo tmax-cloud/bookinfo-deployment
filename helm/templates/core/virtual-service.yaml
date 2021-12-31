@@ -6,9 +6,7 @@ metadata:
 {{ include "bookinfo.labels" . | indent 4 }}
 spec:
   hosts:
-    - {{ .Values.externalDomain }}
-  gateways:
-    - {{ template "bookinfo.istio.ingressGateway" . }}
+    - {{ template "bookinfo.core" . }}
   http:
     - name: core
       match:

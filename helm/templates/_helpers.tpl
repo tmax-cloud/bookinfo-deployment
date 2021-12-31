@@ -108,8 +108,12 @@ Create the name of the service account to use
   {{- printf "%s-egressgateway" (include "bookinfo.fullname" .) -}}
 {{- end -}}
 
-{{- define "bookinfo.istio.virtualService" -}}
-  {{- printf "%s" (include "bookinfo.fullname" .) -}}
+{{- define "bookinfo.istio.ingressVirtualService" -}}
+  {{- printf "%s-ingress-vs" (include "bookinfo.fullname" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.istio.egressVirtualService" -}}
+  {{- printf "%s-egress-vs" (include "bookinfo.fullname" .) -}}
 {{- end -}}
 
 {{- define "bookinfo.istio.destRule" -}}
