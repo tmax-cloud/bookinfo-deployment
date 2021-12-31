@@ -10,7 +10,8 @@ spec:
   selector:
     matchLabels:
 {{ include "bookinfo.matchLabels" . | indent 6 }}
-      component: rating
+      app: rating
+      version: {{ .Values.rating.image.tag }}
   strategy:
     canary:
       canaryService: {{ template "bookinfo.rating" . }}-canary
@@ -29,7 +30,8 @@ spec:
     metadata:
       labels:
 {{ include "bookinfo.matchLabels" . | indent 8 }}
-        component: rating
+        app: rating
+        version: {{ .Values.rating.image.tag }}
     spec:
       containers:
         - name: rating
@@ -39,7 +41,7 @@ spec:
             - configMapRef:
                 name: {{ template "bookinfo.rating" . }}
           ports:
-            - containerPort: 8080
+            - containerPort: {{ template "bookinfo.rating.containerPort" . }}
           readinessProbe:
             httpGet:
               path: /actuator/health

@@ -5,19 +5,20 @@ metadata:
   name: {{ template "bookinfo.kafka" . }}
   labels:
 {{ include "bookinfo.labels" . | indent 4 }}
-    component: kafka
 spec:
   replicas: 1
   serviceName: "{{ template "bookinfo.kafka" . }}"
   selector:
     matchLabels:
 {{ include "bookinfo.matchLabels" . | indent 6 }}
-      component: kafka
+      app: kafka
+      version: {{ .Values.eventing.internal.kafka.image.tag }}
   template:
     metadata:
       labels:
 {{ include "bookinfo.matchLabels" . | indent 8 }}
-        component: kafka
+        app: kafka
+        version: {{ .Values.eventing.internal.kafka.image.tag }}
     spec:
       containers:
         - name: kafka

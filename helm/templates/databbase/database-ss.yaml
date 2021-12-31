@@ -4,19 +4,20 @@ metadata:
   name: {{ template "bookinfo.database" . }}
   labels:
 {{ include "bookinfo.labels" . | indent 4 }}
-    component: database
 spec:
   replicas: 1
   serviceName: "{{ template "bookinfo.database" . }}"
   selector:
     matchLabels:
 {{ include "bookinfo.matchLabels" . | indent 6 }}
-      component: database
+      app: database
+      version: {{ .Values.database.image.tag }}
   template:
     metadata:
       labels:
 {{ include "bookinfo.matchLabels" . | indent 8 }}
-        component: database
+        app: database
+        version: {{ .Values.database.image.tag }}
     spec:
       securityContext:
         runAsUser: 999

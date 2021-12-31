@@ -4,14 +4,14 @@ metadata:
   name:  {{ template "bookinfo.core" . }}
   labels:
 {{ include "bookinfo.labels" . | indent 4 }}
-    component: core
 spec:
   replicas: {{ .Values.core.replicas }}
   revisionHistoryLimit: {{ .Values.core.revisionHistoryLimit }}
   selector:
     matchLabels:
 {{ include "bookinfo.matchLabels" . | indent 6 }}
-      component: core
+      app: core
+      version: {{ .Values.core.image.tag }}
   strategy:
     canary:
       canaryService: {{ template "bookinfo.core" . }}-canary
@@ -30,7 +30,8 @@ spec:
     metadata:
       labels:
 {{ include "bookinfo.matchLabels" . | indent 8 }}
-        component: core
+        app: core
+        version: {{ .Values.core.image.tag }}
     spec:
       containers:
         - name: core
@@ -40,7 +41,7 @@ spec:
           - configMapRef:
               name: {{ template "bookinfo.core" . }}
           ports:
-            - containerPort: 80
+            - containerPort: {{ template "bookinfo.core.containerPort" . }}
           volumeMounts:
             - name: conf
               mountPath: /app/application.properties

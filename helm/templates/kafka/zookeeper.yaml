@@ -5,18 +5,19 @@ metadata:
   name: {{ template "bookinfo.zookeeper" . }}
   labels:
 {{ include "bookinfo.labels" . | indent 4 }}
-    components: zookeeper
 spec:
   replicas: 1
   selector:
     matchLabels:
 {{ include "bookinfo.matchLabels" . | indent 6 }}
-      component: zookeeper
+      app: zookeeper
+      version: {{ .Values.eventing.internal.zookeeper.image.tag }}
   template:
     metadata:
       labels:
 {{ include "bookinfo.matchLabels" . | indent 8 }}
-        component: zookeeper
+        app: zookeeper
+        version: {{ .Values.eventing.internal.zookeeper.image.tag }}
     spec:
       containers:
         - name: zookeeper

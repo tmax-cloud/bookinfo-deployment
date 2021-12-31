@@ -8,9 +8,11 @@ spec:
   ports:
   - port: {{ template "bookinfo.rating.servicePort" . }}
     targetPort: {{ template "bookinfo.rating.containerPort" . }}
+    name: http-rest
   selector:
 {{ include "bookinfo.matchLabels" . | indent 4 }}
-    component: rating
+    app: rating
+    version: {{ .Values.rating.image.tag }}
 ---
 apiVersion: v1
 kind: Service
@@ -22,6 +24,8 @@ spec:
   ports:
     - port: {{ template "bookinfo.rating.servicePort" . }}
       targetPort: {{ template "bookinfo.rating.containerPort" . }}
+      name: http-rest
   selector:
 {{ include "bookinfo.matchLabels" . | indent 4 }}
-    component: rating
+    app: rating
+    version: {{ .Values.rating.image.tag }}

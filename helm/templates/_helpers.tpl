@@ -34,15 +34,14 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "bookinfo.labels" -}}
-chart: {{ .Chart.Name }}
-release: {{ .Release.Name }}
-app: "{{ template "bookinfo.name" . }}"
+chart: "{{ template "bookinfo.chart" . }}"
+release: "{{ .Release.Name }}"
 {{- end }}
 
 {{/* matchLabels */}}
 {{- define "bookinfo.matchLabels" -}}
-release: {{ .Release.Name }}
-app: "{{ template "bookinfo.name" . }}"
+chart: "{{ template "bookinfo.chart" . }}"
+release: "{{ .Release.Name }}"
 {{- end }}
 
 {{- define "bookinfo.istio.ingressGatwayMatchLabels" -}}

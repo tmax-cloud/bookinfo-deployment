@@ -10,7 +10,8 @@ spec:
   selector:
     matchLabels:
 {{ include "bookinfo.matchLabels" . | indent 6 }}
-      component: order
+      app: order
+      version: {{ .Values.order.image.tag }}
   strategy:
     canary:
       canaryService: {{ template "bookinfo.order" . }}-canary
@@ -29,7 +30,8 @@ spec:
     metadata:
       labels:
 {{ include "bookinfo.matchLabels" . | indent 8 }}
-        component: order
+        app: order
+        version: {{ .Values.order.image.tag }}
     spec:
       containers:
         - name: order
@@ -39,7 +41,7 @@ spec:
           - configMapRef:
               name: {{ template "bookinfo.order" . }}
           ports:
-            - containerPort: 8080
+            - containerPort: {{ template "bookinfo.order.containerPort" . }}
           readinessProbe:
             httpGet:
               path: /actuator/health

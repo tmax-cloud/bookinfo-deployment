@@ -7,7 +7,9 @@ metadata:
 spec:
   ports:
     - port: 5432
+      name: tcp-database
   selector:
 {{ include "bookinfo.matchLabels" . | indent 4 }}
-    component: database
+    app: database
+    version: {{ .Values.database.image.tag }}
   clusterIP: None
