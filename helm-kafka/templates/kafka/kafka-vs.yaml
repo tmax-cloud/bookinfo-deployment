@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ template "bookinfo.kafka.virtualservice" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  hosts:
+    - {{ template "bookinfo.kafka" . }}
+  tcp:
+    - match:
+        - port: {{ template "bookinfo.kafka.servicePort" . }}
+      route:
+        - destination:
+            host: {{ template "bookinfo.kafka" . }}
+            port:
+              number: {{ template "bookinfo.kafka.containerPort" . }}

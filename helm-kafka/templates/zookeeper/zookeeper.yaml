@@ -1,4 +1,3 @@
-{{- if eq .Values.eventing.type "internal" -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -11,17 +10,17 @@ spec:
     matchLabels:
 {{ include "bookinfo.matchLabels" . | indent 6 }}
       app: zookeeper
-      version: {{ .Values.eventing.internal.zookeeper.image.tag }}
+      version: {{ .Values.zookeeper.image.tag }}
   template:
     metadata:
       labels:
 {{ include "bookinfo.matchLabels" . | indent 8 }}
         app: zookeeper
-        version: {{ .Values.eventing.internal.zookeeper.image.tag }}
+        version: {{ .Values.zookeeper.image.tag }}
     spec:
       containers:
         - name: zookeeper
-          image: "{{ .Values.eventing.internal.zookeeper.image.repository }}:{{ .Values.eventing.internal.zookeeper.image.tag }}"
+          image: "{{ .Values.zookeeper.image.repository }}:{{ .Values.zookeeper.image.tag }}"
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           env:
             - name: ALLOW_ANONYMOUS_LOGIN
@@ -30,9 +29,8 @@ spec:
             - containerPort: {{ template "bookinfo.zookeeper.containerPort" . }}
           resources:
             requests:
-              cpu: {{ .Values.eventing.internal.zookeeper.resources.requests.cpu }}
-              memory: {{ .Values.eventing.internal.zookeeper.resources.requests.memory }}
+              cpu: {{ .Values.zookeeper.resources.requests.cpu }}
+              memory: {{ .Values.zookeeper.resources.requests.memory }}
             limits:
-              cpu: {{ .Values.eventing.internal.zookeeper.resources.limits.cpu }}
-              memory: {{ .Values.eventing.internal.zookeeper.resources.limits.memory }}
-{{- end -}}
+              cpu: {{ .Values.zookeeper.resources.limits.cpu }}
+              memory: {{ .Values.zookeeper.resources.limits.memory }}

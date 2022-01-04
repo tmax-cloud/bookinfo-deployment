@@ -1,4 +1,3 @@
-{{- if eq .Values.eventing.type "internal" -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -9,10 +8,9 @@ spec:
   selector:
 {{ include "bookinfo.matchLabels" . | indent 4 }}
     app: kafka
-    version: {{ .Values.eventing.internal.kafka.image.tag }}
+    version: {{ .Values.kafka.image.tag }}
   ports:
     - port: {{ template "bookinfo.kafka.servicePort" . }}
       targetPort: {{ template "bookinfo.kafka.containerPort" . }}
       name: tcp-kafka
   clusterIP: None
-{{- end -}}

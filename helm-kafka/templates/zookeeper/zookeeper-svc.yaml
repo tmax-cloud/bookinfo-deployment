@@ -1,4 +1,3 @@
-{{- if eq .Values.eventing.type "internal" -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -9,10 +8,9 @@ spec:
   selector:
 {{ include "bookinfo.matchLabels" . | indent 4 }}
     app: zookeeper
-    version: {{ .Values.eventing.internal.zookeeper.image.tag }}
+    version: {{ .Values.zookeeper.image.tag }}
   ports:
     - port: {{ template "bookinfo.zookeeper.servicePort" . }}
       targetPort: {{ template "bookinfo.zookeeper.containerPort" . }}
       name: tcp-zookeeper
   type: ClusterIP
-{{- end -}}

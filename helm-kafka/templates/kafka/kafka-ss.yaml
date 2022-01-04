@@ -1,4 +1,3 @@
-{{- if eq .Values.eventing.type "internal" -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -12,17 +11,17 @@ spec:
     matchLabels:
 {{ include "bookinfo.matchLabels" . | indent 6 }}
       app: kafka
-      version: {{ .Values.eventing.internal.kafka.image.tag }}
+      version: {{ .Values.kafka.image.tag }}
   template:
     metadata:
       labels:
 {{ include "bookinfo.matchLabels" . | indent 8 }}
         app: kafka
-        version: {{ .Values.eventing.internal.kafka.image.tag }}
+        version: {{ .Values.kafka.image.tag }}
     spec:
       containers:
         - name: kafka
-          image: "{{ .Values.eventing.internal.kafka.image.repository }}:{{ .Values.eventing.internal.kafka.image.tag }}"
+          image: "{{ .Values.kafka.image.repository }}:{{ .Values.kafka.image.tag }}"
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           env:
             - name: KAFKA_ADVERTISED_LISTENERS
@@ -41,11 +40,11 @@ spec:
             - containerPort: {{ template "bookinfo.kafka.containerPort" . }}
           resources:
             requests:
-              cpu: {{ .Values.eventing.internal.kafka.resources.requests.cpu }}
-              memory: {{ .Values.eventing.internal.kafka.resources.requests.memory }}
+              cpu: {{ .Values.kafka.resources.requests.cpu }}
+              memory: {{ .Values.kafka.resources.requests.memory }}
             limits:
-              cpu: {{ .Values.eventing.internal.kafka.resources.limits.cpu }}
-              memory: {{ .Values.eventing.internal.kafka.resources.limits.memory }}
+              cpu: {{ .Values.kafka.resources.limits.cpu }}
+              memory: {{ .Values.kafka.resources.limits.memory }}
           volumeMounts:
             - name: kafka-data
               mountPath: /kafka
@@ -67,4 +66,3 @@ spec:
         resources:
           requests:
             storage: {{ .Values.persistence.persistentVolumeClaim.kafka.size | quote }}
-{{- end -}}
