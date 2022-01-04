@@ -20,6 +20,6 @@ data:
   SPRING_DATASOURCE_URL: {{ template "bookinfo.database.url" . }}/bookorder
   SPRING_DATASOURCE_USERNAME: {{ template "bookinfo.database.username" . }}
   SPRING_DATASOURCE_PASSWORD: {{ template "bookinfo.database.password" . }}
-  SPRING_KAFKA_BOOTSTRAP-SERVERS: {{ template "bookinfo.kafka.bootstrapServers" . }}
+  SPRING_KAFKA_BOOTSTRAP-SERVERS: {{ .Values.eventing.bootstrapServers }}
   OPENTRACING_JAEGER_HTTP-SENDER_URL: {{ .Values.trace.jaeger.httpSenderURL }}
-  UPSTREAM_PAYMENT: {{ .Values.upstream.paymentURL }}
+  UPSTREAM_PAYMENT: {{ .Values.upstream.payment.url }}
