@@ -4,5 +4,5 @@
 
 spec:
   destination:
-    namespace: argocd
+    namespace: staging
     server: https://kubernetes.default.svc
