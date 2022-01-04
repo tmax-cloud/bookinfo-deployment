@@ -6,7 +6,7 @@ metadata:
 {{ include "bookinfo.labels" . | indent 4 }}
 spec:
   hosts:
-    - {{ template "bookinfo.upstream.payment" . }}
+    - {{ .Values.upstream.payment.host }}
   gateways:
     - {{ template "bookinfo.istio.egressGateway" . }}
   http:
@@ -16,6 +16,6 @@ spec:
           port: 80
       route:
         - destination:
-            host: {{ template "bookinfo.upstream.payment" . }}
+            host: {{ .Values.upstream.payment.host }}
             port:
               number: 80

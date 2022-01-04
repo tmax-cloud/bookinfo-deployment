@@ -1,35 +1,29 @@
 # Default values for helm-core.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-appName: core-blue-green
 
-replicaCount: 2
+externalDomain: bookinfo.192.168.0.102.nip.io
 
-revisionHistoryLimit: 3
+upstream:
+  core:
+    host: core-helm-core-rollouts-core
+    port: 8080
+  rating:
+    host: rating-helm-rating-rollouts-rating
+    port: 8080
+  order:
+    host: order-helm-order-rollouts-order
+    port: 8080
+  payment:
+    host: "192.168.9.71.nip.io"
 
-image:
-  repository: core.hr.172.22.11.16.nip.io/library/bookinfo-core
-  tag: v0.0.5
-  # tag: green
-
-service:
-  port: 8080
-  targetPort: 8080
-
-configMap:
-  name: config-ops
-
-core:
-  image:
-    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-core
-    tag: v0.0.4
-  revisionHistoryLimit: 3
-  serviceAccountName: ""
-  replicas: 1
-  rolloutPolicy:
-    canary:
-      ratio: 50
-
-trace:
-  jaeger:
-    httpSenderURL: "http://jaeger-collector.istio-system:14268/api/traces"
+istio:
+  ingressGateway:
+    selector:
+      key: app
+      value: istio-ingressgateway
+  egressGateway:
+    selector:
+      key: app
+      value: istio-egressgateway
+    hostname: istio-egressgateway.istio-system.svc.cluster.local

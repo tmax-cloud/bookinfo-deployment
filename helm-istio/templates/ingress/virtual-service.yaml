@@ -16,24 +16,24 @@ spec:
             prefix: /api/books
       route:
         - destination:
-            host: {{ template "bookinfo.core" . }}
+            host: {{ .Values.upstream.core.host }}
             port:
-              number: 8080
+              number: {{ .Values.upstream.core.port }}
     - name: rating
       match:
         - uri:
             prefix: /api/rating
       route:
         - destination:
-            host: {{ template "bookinfo.rating" . }}
+            host: {{ .Values.upstream.rating.host }}
             port:
-              number: 8080
+              number: {{ .Values.upstream.rating.port }}
     - name: orders
       match:
         - uri:
             prefix: /api/orders
       route:
         - destination:
-            host: {{ template "bookinfo.order" . }}
+            host: {{ .Values.upstream.order.host }}
             port:
-              number: 8080
+              number: {{ .Values.upstream.order.port }}
