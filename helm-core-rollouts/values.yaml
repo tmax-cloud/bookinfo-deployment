@@ -1,23 +1,10 @@
 # Default values for helm-core.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-appName: core-blue-green
 
-replicaCount: 2
-
-revisionHistoryLimit: 3
-
-image:
-  repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-core
-  tag: v0.0.4
-  # tag: green
-
-service:
-  port: 8080
-  targetPort: 8080
-
-configMap:
-  name: config-ops
+upstream:
+  rating:
+    url: rating-helm-rating-rollouts-rating:8080
 
 core:
   image:
@@ -29,6 +16,36 @@ core:
   rolloutPolicy:
     canary:
       ratio: 50
+
+database:
+  image:
+    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-db
+    tag: v0.0.4
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+imagePullPolicy: Always
+
+eventing:
+  bootstrapServers: "kafka-bookinfo-event-stream-kafka:9092"
+  consumer:
+    groupId: "tmax"
+
+persistence:
+  enabled: true
+  # Setting it to "keep" to avoid removing PVCs during a helm delete
+  # operation. Leaving it empty will delete PVCs after the chart deleted
+  # (this does not apply for PVCs that are created for internal database
+  # and redis components, i.e. they are never deleted automatically)
+  resourcePolicy: "keep"
+  persistentVolumeClaim:
+    database:
+      existingClaim: ""
+      storageClass: "rook-cephfs"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 1Gi
 
 trace:
   jaeger:
