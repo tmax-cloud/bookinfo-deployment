@@ -33,7 +33,7 @@ persistence:
   persistentVolumeClaim:
     database:
       existingClaim: ""
-      storageClass: "rook-cephfs"
+      storageClass: "csi-cephfs-sc"
       subPath: ""
       accessMode: ReadWriteOnce
       size: 1Gi
