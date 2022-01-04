@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name:  {{ template "bookinfo.core" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.core.replicas }}
+  revisionHistoryLimit: {{ .Values.core.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+{{ include "bookinfo.matchLabels" . | indent 6 }}
+      app: core
+      version: {{ .Values.core.image.tag }}
+  strategy:
+    canary:
+      canaryService: {{ template "bookinfo.core" . }}-canary
+      stableService: {{ template "bookinfo.core" . }}
+      trafficRouting:
+        istio:
+          virtualService:
+            name: {{ template "bookinfo.core.virtualservice" . }}
+            routes:
+              - core
+      steps:
+        - setWeight: 5
+        - pause:
+            duration: 10m
+  template:
+    metadata:
+      labels:
+{{ include "bookinfo.matchLabels" . | indent 8 }}
+        app: core
+        version: {{ .Values.core.image.tag }}
+    spec:
+      containers:
+        - name: core
+          image: "{{ .Values.core.image.repository }}:{{ .Values.core.image.tag }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          envFrom:
+          - configMapRef:
+              name: {{ template "bookinfo.core" . }}
+          ports:
+            - containerPort: {{ template "bookinfo.core.containerPort" . }}
+          volumeMounts:
+            - name: conf
+              mountPath: /app/application.properties
+              subPath: application.properties
+      volumes:
+        - name: conf
+          configMap:
+            name: {{ template "bookinfo.core" . }}
+            items:
+              - key: application.properties
+                path: application.properties

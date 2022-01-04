@@ -1,0 +1,10 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "bookinfo.payment.destinationRule" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  host: {{ .Values.istio.egressGateway.hostname }}
+  subsets:
+    - name: payment

@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: {{ template "bookinfo.payment" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  hosts:
+    - {{ template "bookinfo.upstream.payment" . }}
+  location: MESH_EXTERNAL
+  ports:
+    - name: http
+      number: 80
+      protocol: HTTP
+  resolution: DNS
