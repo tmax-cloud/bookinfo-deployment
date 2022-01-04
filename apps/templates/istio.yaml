@@ -11,6 +11,6 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-    path: helm-istio-rollouts
+    path: helm-istio
     repoURL: https://github.com/tmax-cloud/bookinfo-deployment.git
     targetRevision: app-of-apps
