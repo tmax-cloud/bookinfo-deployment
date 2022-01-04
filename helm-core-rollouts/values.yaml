@@ -4,7 +4,7 @@
 
 upstream:
   rating:
-    url: rating-helm-rating-rollouts-rating:8080
+    url: http://rating-helm-rating-rollouts-rating:8080
 
 core:
   image:
