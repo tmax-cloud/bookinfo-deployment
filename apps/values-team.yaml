@@ -3,6 +3,10 @@
 # Declare variables to be passed into your templates.
 
 spec:
+  project: default
   destination:
     namespace: staging
     server: https://kubernetes.default.svc
+ source:
+    helm:
+      valuesFileName: values-team.yaml

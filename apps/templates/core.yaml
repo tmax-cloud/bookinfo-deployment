@@ -9,11 +9,11 @@ spec:
   destination:
     namespace: {{ .Values.spec.destination.namespace }}
     server: {{ .Values.spec.destination.server }}
-  project: default
+  project: {{ .Values.spec.project }}
   source:
     helm:
       valueFiles:
-        - values.yaml
+        - {{ .Values.spec.source.helm.valuesFileName }}
     path: helm-core-rollouts
     repoURL: https://github.com/tmax-cloud/bookinfo-deployment.git
     targetRevision: app-of-apps
