@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "bookinfo.kafka" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  replicas: 1
+  serviceName: "{{ template "bookinfo.kafka" . }}"
+  selector:
+    matchLabels:
+{{ include "bookinfo.matchLabels" . | indent 6 }}
+      app: kafka
+      version: {{ .Values.kafka.image.tag }}
+  template:
+    metadata:
+      labels:
+{{ include "bookinfo.matchLabels" . | indent 8 }}
+        app: kafka
+        version: {{ .Values.kafka.image.tag }}
+    spec:
+      containers:
+        - name: kafka
+          image: "{{ .Values.kafka.image.repository }}:{{ .Values.kafka.image.tag }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          env:
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: "{{ template "bookinfo.kafka.advertisedListners" . }}"
+            - name: KAFKA_LISTENERS
+              value: "{{ template "bookinfo.kafka.listners" . }}"
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: "INSIDE:PLAINTEXT"
+            - name: KAFKA_INTER_BROKER_LISTENER_NAME
+              value: "INSIDE"
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: "{{ template "bookinfo.zookeeperURL" . }}"
+            - name: KAFKA_LOG_DIRS
+              value: /kafka/logs
+          ports:
+            - containerPort: {{ template "bookinfo.kafka.containerPort" . }}
+          resources:
+            requests:
+              cpu: {{ .Values.kafka.resources.requests.cpu }}
+              memory: {{ .Values.kafka.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.kafka.resources.limits.cpu }}
+              memory: {{ .Values.kafka.resources.limits.memory }}
+          volumeMounts:
+            - name: kafka-data
+              mountPath: /kafka
+              subPath: {{ .Values.persistence.persistentVolumeClaim.kafka.subPath }}
+  volumeClaimTemplates:
+    - metadata:
+        name: "kafka-data"
+        labels:
+{{ include "bookinfo.labels" . | indent 10 }}
+      spec:
+        accessModes: [{{ .Values.persistence.persistentVolumeClaim.kafka.accessMode | quote }}]
+          {{- if .Values.persistence.persistentVolumeClaim.kafka.storageClass }}
+          {{- if (eq "-" .Values.persistence.persistentVolumeClaim.kafka.storageClass) }}
+        storageClassName: ""
+          {{- else }}
+        storageClassName: "{{ .Values.persistence.persistentVolumeClaim.kafka.storageClass }}"
+          {{- end }}
+          {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.persistentVolumeClaim.kafka.size | quote }}

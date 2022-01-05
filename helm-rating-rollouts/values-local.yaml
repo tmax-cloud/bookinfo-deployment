@@ -1,0 +1,45 @@
+# Default values for helm-core.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+rating:
+  image:
+    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-rating
+    tag: v0.0.4
+  revisionHistoryLimit: 3
+  serviceAccountName: ""
+  replicas: 1
+  rolloutPolicy:
+    canary:
+      ratio: 50
+      pause:
+        duration: 10m
+
+database:
+  image:
+    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-db
+    tag: v0.0.4
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+imagePullPolicy: Always
+
+persistence:
+  enabled: true
+  # Setting it to "keep" to avoid removing PVCs during a helm delete
+  # operation. Leaving it empty will delete PVCs after the chart deleted
+  # (this does not apply for PVCs that are created for internal database
+  # and redis components, i.e. they are never deleted automatically)
+  resourcePolicy: "keep"
+  persistentVolumeClaim:
+    database:
+      existingClaim: ""
+      storageClass: "rook-cephfs"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 1Gi
+
+trace:
+  jaeger:
+    httpSenderURL: "http://jaeger-collector.istio-system:14268/api/traces"

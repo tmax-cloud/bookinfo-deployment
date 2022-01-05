@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "bookinfo.core" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+data:
+  application.properties: |+
+    spring.application.name=bookinfo-core
+    spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+    spring.jpa.generate-ddl=true
+    spring.jpa.show-sql=true
+    spring.jpa.hibernate.ddl-auto=create-drop
+    spring.kafka.consumer.auto-offset-reset=earliest
+    opentracing.jaeger.udp-sender.host=localhost
+    opentracing.jaeger.udp-sender.port=6831
+    opentracing.jaeger.enable-b3-propagation=true
+    opentracing.jaeger.log-spans=true
+    logging.level.org.springframework.jdbc.core=DEBUG
+  SPRING_DATASOURCE_URL: {{ template "bookinfo.database.url" . }}/bookcore
+  SPRING_DATASOURCE_USERNAME: {{ template "bookinfo.database.username" . }}
+  SPRING_DATASOURCE_PASSWORD: {{ template "bookinfo.database.password" . }}
+  SPRING_KAFKA_BOOTSTRAP-SERVERS: {{ .Values.eventing.bootstrapServers }}
+  SPRING_KAFKA_CONSUMER_GROUP-ID: {{ .Values.eventing.consumer.groupId }}
+  OPENTRACING_JAEGER_HTTP-SENDER_URL: {{ .Values.trace.jaeger.httpSenderURL }}
+  UPSTREAM_RATING: {{ .Values.upstream.rating.url }}

@@ -1,0 +1,60 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ template "bookinfo.rating" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.rating.replicas }}
+  revisionHistoryLimit: {{ .Values.rating.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+{{ include "bookinfo.matchLabels" . | indent 6 }}
+      app: rating
+      version: {{ .Values.rating.image.tag }}
+  strategy:
+    canary:
+      canaryService: {{ template "bookinfo.rating" . }}-canary
+      stableService: {{ template "bookinfo.rating" . }}
+      trafficRouting:
+        istio:
+          virtualService:
+            name: {{ template "bookinfo.rating.virtualservice" . }}
+            routes:
+              - rating
+      steps:
+        - setWeight: {{ .Values.rating.rolloutPolicy.canary.ratio }}
+        - pause:
+            duration: {{ .Values.rating.rolloutPolicy.canary.pause.duration }}
+  template:
+    metadata:
+      labels:
+{{ include "bookinfo.matchLabels" . | indent 8 }}
+        app: rating
+        version: {{ .Values.rating.image.tag }}
+    spec:
+      containers:
+        - name: rating
+          image: "{{ .Values.rating.image.repository }}:{{ .Values.rating.image.tag }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ template "bookinfo.rating" . }}
+          ports:
+            - containerPort: {{ template "bookinfo.rating.containerPort" . }}
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+          volumeMounts:
+            - name: conf
+              mountPath: /app/application.properties
+              subPath: application.properties
+      volumes:
+        - name: conf
+          configMap:
+            name: {{ template "bookinfo.rating" . }}
+            items:
+              - key: application.properties
+                path: application.properties
+

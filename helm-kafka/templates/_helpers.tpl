@@ -55,46 +55,46 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
-{{- define "bookinfo.core" -}}
-  {{- printf "%s-core" (include "bookinfo.fullname" .) -}}
+{{- define "bookinfo.zookeeper" -}}
+  {{- printf "%s-zookeeper" (include "bookinfo.fullname" .) -}}
 {{- end -}}
 
-{{- define "bookinfo.database" -}}
-  {{- printf "%s-db" (include "bookinfo.core" .) -}}
+{{- define "bookinfo.kafka" -}}
+  {{- printf "%s-kafka" (include "bookinfo.fullname" .) -}}
 {{- end -}}
 
-{{- define "bookinfo.database.url" -}}
-  {{- printf "jdbc:postgresql://%s:5432" (include "bookinfo.database" .) -}}
+{{- define "bookinfo.zookeeper.containerPort" -}}
+  {{- printf "2181" -}}
 {{- end -}}
 
-{{- define "bookinfo.database.username" -}}
-  {{- printf "%s" "postgres" -}}
+{{- define "bookinfo.zookeeper.servicePort" -}}
+  {{- printf "2181" -}}
 {{- end -}}
 
-{{- define "bookinfo.database.password" -}}
-  {{- printf "%s" "password" -}}
+{{- define "bookinfo.kafka.containerPort" -}}
+  {{- printf "9092" -}}
 {{- end -}}
 
-{{- define "bookinfo.core.containerPort" -}}
-  {{- printf "8080" -}}
+{{- define "bookinfo.kafka.servicePort" -}}
+  {{- printf "9092" -}}
 {{- end -}}
 
-{{- define "bookinfo.core.servicePort" -}}
-  {{- printf "8080" -}}
+{{- define "bookinfo.kafka.advertisedListners" -}}
+  {{- printf "INSIDE://%s:%s" (include "bookinfo.kafka" .) (include "bookinfo.kafka.containerPort" .) -}}
 {{- end -}}
 
-{{- define "bookinfo.database.containerPort" -}}
-  {{- printf "5432" -}}
+{{- define "bookinfo.kafka.listners" -}}
+  {{- printf "INSIDE://0.0.0.0:%s"  (include "bookinfo.kafka.containerPort" .) -}}
 {{- end -}}
 
-{{- define "bookinfo.database.servicePort" -}}
-  {{- printf "5432" -}}
+{{- define "bookinfo.zookeeperURL" -}}
+  {{- printf "%s:%s" (include "bookinfo.zookeeper" .) (include "bookinfo.zookeeper.containerPort" .) -}}
 {{- end -}}
 
-{{- define "bookinfo.core.virtualservice" -}}
-  {{- printf "%s-vs" (include "bookinfo.core" .) -}}
+{{- define "bookinfo.zookeeper.virtualservice" -}}
+  {{- printf "%s-vs" (include "bookinfo.zookeeper" .) -}}
 {{- end -}}
 
-{{- define "bookinfo.database.virtualservice" -}}
-  {{- printf "%s-vs" (include "bookinfo.database" .) -}}
+{{- define "bookinfo.kafka.virtualservice" -}}
+  {{- printf "%s-vs" (include "bookinfo.kafka" .) -}}
 {{- end -}}

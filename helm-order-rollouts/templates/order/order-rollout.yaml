@@ -1,0 +1,59 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ template "bookinfo.order" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.order.replicas }}
+  revisionHistoryLimit: {{ .Values.order.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+{{ include "bookinfo.matchLabels" . | indent 6 }}
+      app: order
+      version: {{ .Values.order.image.tag }}
+  strategy:
+    canary:
+      canaryService: {{ template "bookinfo.order" . }}-canary
+      stableService: {{ template "bookinfo.order" . }}
+      trafficRouting:
+        istio:
+          virtualService:
+            name: {{ template "bookinfo.order.virtualservice" . }}
+            routes:
+              - orders
+      steps:
+        - setWeight: {{ .Values.order.rolloutPolicy.canary.ratio }}
+        - pause:
+            duration: {{ .Values.order.rolloutPolicy.canary.pause.duration }}
+  template:
+    metadata:
+      labels:
+{{ include "bookinfo.matchLabels" . | indent 8 }}
+        app: order
+        version: {{ .Values.order.image.tag }}
+    spec:
+      containers:
+        - name: order
+          image: "{{ .Values.order.image.repository }}:{{ .Values.order.image.tag }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          envFrom:
+          - configMapRef:
+              name: {{ template "bookinfo.order" . }}
+          ports:
+            - containerPort: {{ template "bookinfo.order.containerPort" . }}
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+          volumeMounts:
+            - name: conf
+              mountPath: /app/application.properties
+              subPath: application.properties
+      volumes:
+        - name: conf
+          configMap:
+            name: {{ template "bookinfo.order" . }}
+            items:
+              - key: application.properties
+                path: application.properties
