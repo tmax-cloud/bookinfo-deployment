@@ -16,7 +16,8 @@ order:
   rolloutPolicy:
     canary:
       ratio: 50
-
+      pause:
+        duration: 10m
 database:
   image:
     repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-db

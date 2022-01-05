@@ -23,9 +23,9 @@ spec:
             routes:
               - rating
       steps:
-        - setWeight: 5
+        - setWeight: {{ .Values.rating.rolloutPolicy.canary.ratio }}
         - pause:
-            duration: 10m
+            duration: {{ .Values.rating.rolloutPolicy.canary.pause.duration }}
   template:
     metadata:
       labels:

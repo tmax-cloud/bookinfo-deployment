@@ -17,9 +17,9 @@ spec:
             host: {{ template "bookinfo.core" . }}
             port:
               number: 8080
-          weight: {{ sub 100 .Values.core.rolloutPolicy.canary.ratio }}
+          weight: 100
         - destination:
             host: {{ template "bookinfo.core" . }}-canary
             port:
               number: 8080
-          weight: {{ .Values.core.rolloutPolicy.canary.ratio }}
+          weight: 0

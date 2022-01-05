@@ -16,6 +16,8 @@ order:
   rolloutPolicy:
     canary:
       ratio: 50
+      pause:
+        duration: 10m
 
 database:
   image:

@@ -23,9 +23,9 @@ spec:
             routes:
               - orders
       steps:
-        - setWeight: 5
+        - setWeight: {{ .Values.order.rolloutPolicy.canary.ratio }}
         - pause:
-            duration: 10m
+            duration: {{ .Values.order.rolloutPolicy.canary.pause.duration }}
   template:
     metadata:
       labels:
