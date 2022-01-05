@@ -10,13 +10,13 @@ spec:
   selector:
     matchLabels:
 {{ include "bookinfo.matchLabels" . | indent 6 }}
-      app: database
+      app: db-order
       version: {{ .Values.database.image.tag }}
   template:
     metadata:
       labels:
 {{ include "bookinfo.matchLabels" . | indent 8 }}
-        app: database
+        app: db-order
         version: {{ .Values.database.image.tag }}
     spec:
       securityContext:

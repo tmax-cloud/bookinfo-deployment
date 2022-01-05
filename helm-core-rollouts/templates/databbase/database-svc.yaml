@@ -10,6 +10,6 @@ spec:
       name: tcp-database
   selector:
 {{ include "bookinfo.matchLabels" . | indent 4 }}
-    app: database
+    app: db-core
     version: {{ .Values.database.image.tag }}
   clusterIP: None
