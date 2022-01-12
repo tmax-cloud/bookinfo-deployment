@@ -31,7 +31,7 @@
 1. ArgoCD
     * install 가이드 : https://github.com/tmax-cloud/install-argocd
 2. Argo Rollouts 
-    * install 가이드 : 준비 예정
+    * install 가이드 : https://github.com/tmax-cloud/install-argo-rollouts
 3. 서드 파티 설치
    * 클러스터에 Istio 및 아래 링크를 통해 플러그인 설치
      * https://istio.io/latest/docs/ops/integrations/kiali/
