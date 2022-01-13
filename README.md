@@ -9,8 +9,8 @@ ArgoCD를 이용한 GitOps 기반 `BookInfo` 마이크로서비스 배포 레포
 * [CI](https://github.com/tmax-cloud/bookinfo-deployment/tree/main/docs/CI.md)
 
 
-![image](https://github.com/tmax-cloud/bookinfo-deployment/tree/main/img/design.png)
+![image](https://github.com/tmax-cloud/bookinfo-deployment/blob/main/img/design.png)
 
-![image](https://github.com/tmax-cloud/bookinfo-deployment/tree/main/img/kiali.png)
+![image](https://github.com/tmax-cloud/bookinfo-deployment/blob/main/img/kiali.png)
 
-![image](https://github.com/tmax-cloud/bookinfo-deployment/tree/main/img/tracing.png)
+![image](https://github.com/tmax-cloud/bookinfo-deployment/blob/main/img/tracing.png)

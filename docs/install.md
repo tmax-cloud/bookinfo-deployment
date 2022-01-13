@@ -47,10 +47,10 @@ https://github.com/tmax-cloud/bookinfo-deployment 에 접속 후 레포를 fork�
                * `kubectl label namespace <name> istio-injection=enabled`을 통해 해당 네임스페이스에서 istio 활성화
 
    4. 생성된 apps를 Sync
-      ![image](https://github.com/tmax-cloud/bookinfo-deployment/tree/main/img/1.png)
+      ![image](https://github.com/tmax-cloud/bookinfo-deployment/blob/main/img/1.png)
    
    5. apps를 통해 생성된 다른 애플리케이션들 Sync
-      ![image](https://github.com/tmax-cloud/bookinfo-deployment/tree/main/img/2.png)
+      ![image](https://github.com/tmax-cloud/bookinfo-deployment/blob/main/img/2.png)
                                                 
    6. 모든 서비스가 정상적으로 배포되었는지 확인
 
