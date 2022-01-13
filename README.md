@@ -32,7 +32,10 @@
     * install 가이드 : https://github.com/tmax-cloud/install-argocd
 2. Argo Rollouts 
     * install 가이드 : https://github.com/tmax-cloud/install-argo-rollouts
-3. 서드 파티 설치
+3. Istio
+   1. install 가이드: https://github.com/tmax-cloud/install-istio
+   
+4. 서드 파티 설치
    * 클러스터에 Istio 및 아래 링크를 통해 플러그인 설치
      * https://istio.io/latest/docs/ops/integrations/kiali/
      * https://istio.io/latest/docs/ops/integrations/jaeger/
@@ -59,7 +62,7 @@
   * Repository URL: https://github.com/tmax-cloud/bookinfo-deployment.git
   * Revision : main
   * Path : apps
-    
+  
 * DESTINATION
   * Cluster URL: https://kubernetes.default.svc
   * Namespace: staging, 혹은 ops
