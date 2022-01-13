@@ -7,9 +7,9 @@
 
 ## 1. 배포
 
-1. Git Reo Fork
+1. Fork git repository 
 
-https://github.com/tmax-cloud/bookinfo-deployment 에 접속 후 레포를 fork한다.
+   https://github.com/tmax-cloud/bookinfo-deployment 에 접속 후 레포를 fork한다.
 
 2. 배포 설정
 
