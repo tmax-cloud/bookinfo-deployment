@@ -13,17 +13,16 @@
 
 2. 배포 설정
 
-    1. apps/values-XXX.yaml을 참고하여 환경에 맞게 수정 혹은 새로운 values.yaml을 추가한다.
+    1. 아래 폴더 목록의 포함된 values-XXX.yaml을 참고하여 환경에 맞게 수정한다.
 
-    2. apps 외에 아래 폴더에 포함된 values-XXX.yaml도 환경에 맞게 수정한다.
+       * apps
+       * helm-core-rollouts
+       * helm-rating-rollouts
+       * helm-payment-rollouts
+       * helm-kafka
+       * helm-istio
 
-     * helm-core-rollouts
-     * helm-rating-rollouts
-     * helm-payment-rollouts
-     * helm-kafka
-     * helm-istio
-
-    3. 수정된 파일들을 commit & push 한다.
+    2. 수정된 파일들을 commit & push 한다.
 
 3. Service mesh 배포
    1. ArgoCD 서버에 접속한다.
@@ -47,12 +46,18 @@
                * `kubectl label namespace <name> istio-injection=enabled`을 통해 해당 네임스페이스에서 istio 활성화
 
    4. 생성된 apps를 Sync
+   
       ![image](https://github.com/tmax-cloud/bookinfo-deployment/blob/main/img/1.png)
    
-   5. apps를 통해 생성된 다른 애플리케이션들 Sync
       ![image](https://github.com/tmax-cloud/bookinfo-deployment/blob/main/img/2.png)
+   
+   5. apps를 통해 생성된 다른 애플리케이션들 Sync
+   
+      ![image](https://github.com/tmax-cloud/bookinfo-deployment/blob/main/img/3.png)
                                                 
    6. 모든 서비스가 정상적으로 배포되었는지 확인
+   
+      ![image](https://github.com/tmax-cloud/bookinfo-deployment/blob/main/img/4.png)
 
 4. Payment 서비스 기동 (External 서비스)
 
