@@ -62,7 +62,19 @@
 4. Payment 서비스 기동 (External 서비스)
 
     ```bash
-    docker run -d -p 80:8080 -e UPSTREAM_ORDER=<bookinfo_ingress_gateway_url> tmaxcloudck/bookinfo-payment
+    docker run -d -p 80:8080 -e UPSTREAM_ORDER=<istio-ingress-gateway> tmaxcloudck/bookinfo-payment
     ```
    
-5. API 호출을 통해 서비스 잘 되는지 확인
+5. API 호출을 통해 서비스 잘 되는지 확인 ([API 목록](https://github.com/tmax-cloud/bookinfo-deployment/tree/main/docs/api.md))
+
+    1. 주문 확인
+       1. `GET http://<istio-ingress-gateway>/api/books`를 통해 재고 현황 확인
+       2. `POST http://<istio-ingress-gateway>/api/orders`를 통해 책 주문 서비스 콜
+       3. `GEThttp://<istio-ingress-gateway>/api/books` 재고 변경사항 확인
+
+    2. 평점 확인
+       1. `GET http://<istio-ingress-gateway>/api/books/{id}`를 통해 현재 평점 확인
+       2. `POST http://<istio-ingress-gateway>/api/books/{id}/rating`를 통해 새 평점 추가
+       3. `GET http://<istio-ingress-gateway>/api/books/{id}`를 통해 변경된 평점 확인
+       
+6. Istio 플러그인으로 설치한 Kiali, Jaeger에 접속하여 확인
