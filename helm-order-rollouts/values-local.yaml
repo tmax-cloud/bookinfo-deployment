@@ -9,7 +9,7 @@ upstream:
 order:
   image:
     repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-order
-    tag: v0.0.4
+    tag: avg
   revisionHistoryLimit: 3
   serviceAccountName: ""
   replicas: 1
