@@ -10,6 +10,11 @@ spec:
     namespace: {{ .Values.spec.destination.namespace }}
     server: {{ .Values.spec.destination.server }}
   project: {{ .Values.spec.project }}
+  syncPolicy:
+    automated:
+      prune: {{ .Values.spec.syncPolicy.automated.prune }}
+    syncOptions:
+      - CreateNamespace={{ .Values.spec.syncPolicy.syncOptions.createNamespace }}
   source:
     helm:
       valueFiles:
