@@ -13,7 +13,7 @@ rating:
     canary:
       ratio: 50
       pause:
-        duration: 10m
+        duration: 12h
 
 database:
   image:
