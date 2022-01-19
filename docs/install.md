@@ -62,7 +62,7 @@
 4. Payment 서비스 기동 (External 서비스)
 
     ```bash
-    docker run -d -p 80:8080 -e UPSTREAM_ORDER=<istio-ingress-gateway> tmaxcloudck/bookinfo-payment
+    docker run -d -p 80:8080 -e UPSTREAM_ORDER=<istio-ingress-gateway> -e OPENTRACING_JAEGER_ENABLED=false tmaxcloudck/bookinfo-payment:v0.0.6
     ```
    
 5. API 호출을 통해 서비스 잘 되는지 확인 ([API 목록](https://github.com/tmax-cloud/bookinfo-deployment/tree/main/docs/api.md))
