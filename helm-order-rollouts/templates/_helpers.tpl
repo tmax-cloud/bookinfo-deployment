@@ -56,7 +56,7 @@ Create the name of the service account to use
 {{- end }}
 
 {{- define "bookinfo.order" -}}
-  {{- printf "%s-order" (include "bookinfo.fullname" .) -}}
+  {{- printf "%s" (include "bookinfo.fullname" .) -}}
 {{- end -}}
 
 {{- define "bookinfo.database" -}}
