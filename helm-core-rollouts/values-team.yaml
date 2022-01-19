@@ -4,7 +4,7 @@
 
 upstream:
   rating:
-    url: http://rating-helm-rating-rollouts-rating:8080
+    url: http://rating:8080
 
 core:
   image:
@@ -30,7 +30,7 @@ database:
 imagePullPolicy: Always
 
 eventing:
-  bootstrapServers: "kafka-bookinfo-event-stream-kafka:9092"
+  bootstrapServers: "event-kafka:9092"
   consumer:
     groupId: "book"
 

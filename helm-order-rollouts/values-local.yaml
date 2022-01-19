@@ -29,7 +29,7 @@ database:
 imagePullPolicy: Always
 
 eventing:
-  bootstrapServers: "kafka-bookinfo-event-stream-kafka:9092"
+  bootstrapServers: "event-kafka:9092"
 
 persistence:
   enabled: true
