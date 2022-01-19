@@ -20,5 +20,5 @@ spec:
       valueFiles:
         - {{ .Values.spec.source.helm.valuesFileName }}
     path: helm-istio
-    repoURL: https://github.com/tmax-cloud/bookinfo-deployment.git
-    targetRevision: app-of-apps
+    repoURL: {{ .Values.spec.source.repoURL }}
+    targetRevision: {{ .Values.spec.source.targetRevision }}

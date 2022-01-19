@@ -15,3 +15,5 @@ spec:
   source:
     helm:
       valuesFileName: values-local.yaml
+    repoURL: https://github.com/taejune/bookinfo-deployment.git
+    targetRevision: local
