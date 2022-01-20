@@ -25,7 +25,7 @@ spec:
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           env:
             - name: ALLOW_PLAINTEXT_LISTENER
-              value: yes
+              value: "yes"
             - name: KAFKA_ADVERTISED_LISTENERS
               value: "{{ template "bookinfo.kafka.advertisedListners" . }}"
             - name: KAFKA_LISTENERS
