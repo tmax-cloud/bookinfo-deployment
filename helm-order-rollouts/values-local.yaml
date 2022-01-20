@@ -8,7 +8,7 @@ upstream:
 
 order:
   image:
-    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-order
+    repository: tmaxcloudck/bookinfo-order
     tag: v0.0.4
   revisionHistoryLimit: 3
   serviceAccountName: ""
@@ -20,7 +20,7 @@ order:
         duration: 10m
 database:
   image:
-    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-db
+    repository: tmaxcloudck/bookinfo-db
     tag: v0.0.4
   nodeSelector: {}
   tolerations: []

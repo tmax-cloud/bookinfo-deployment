@@ -4,7 +4,7 @@
 
 rating:
   image:
-    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-rating
+    repository: tmaxcloudck/bookinfo-rating
     tag: v0.0.4
   revisionHistoryLimit: 3
   serviceAccountName: ""
@@ -17,7 +17,7 @@ rating:
 
 database:
   image:
-    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-db
+    repository: tmaxcloudck/bookinfo-db
     tag: v0.0.4
   nodeSelector: {}
   tolerations: []
