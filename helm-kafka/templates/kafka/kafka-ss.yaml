@@ -24,6 +24,8 @@ spec:
           image: "{{ .Values.kafka.image.repository }}:{{ .Values.kafka.image.tag }}"
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           env:
+            - name: ALLOW_PLAINTEXT_LISTENER
+              value: yes
             - name: KAFKA_ADVERTISED_LISTENERS
               value: "{{ template "bookinfo.kafka.advertisedListners" . }}"
             - name: KAFKA_LISTENERS
