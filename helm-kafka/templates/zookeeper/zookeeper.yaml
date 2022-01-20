@@ -9,14 +9,12 @@ spec:
   selector:
     matchLabels:
 {{ include "bookinfo.matchLabels" . | indent 6 }}
-      app: zookeeper
-      version: {{ .Values.zookeeper.image.tag }}
+      app: {{ template "bookinfo.zookeeper" . }}
   template:
     metadata:
       labels:
 {{ include "bookinfo.matchLabels" . | indent 8 }}
-        app: zookeeper
-        version: {{ .Values.zookeeper.image.tag }}
+        app: {{ template "bookinfo.zookeeper" . }}
     spec:
       containers:
         - name: zookeeper

@@ -1,25 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name:  {{ template "bookinfo.core" . }}
+  name: {{ template "core.app" . }}
   labels:
-{{ include "bookinfo.labels" . | indent 4 }}
+{{ include "core.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.core.replicas }}
   revisionHistoryLimit: {{ .Values.core.revisionHistoryLimit }}
   selector:
     matchLabels:
-{{ include "bookinfo.matchLabels" . | indent 6 }}
-      app: core
-      version: {{ .Values.core.image.tag }}
+{{ include "core.matchLabels" . | indent 6 }}
+      app: {{ template "core.app" . }}
   strategy:
     canary:
-      canaryService: {{ template "bookinfo.core" . }}-canary
-      stableService: {{ template "bookinfo.core" . }}
+      canaryService: {{ template "core.app" . }}-canary
+      stableService: {{ template "core.app" . }}-stable
       trafficRouting:
         istio:
           virtualService:
-            name: {{ template "bookinfo.core.virtualservice" . }}
+            name: {{ template "core.app" . }}
             routes:
               - core
       steps:
@@ -29,9 +28,8 @@ spec:
   template:
     metadata:
       labels:
-{{ include "bookinfo.matchLabels" . | indent 8 }}
-        app: core
-        version: {{ .Values.core.image.tag }}
+{{ include "core.matchLabels" . | indent 8 }}
+        app: {{ template "core.app" . }}
     spec:
       containers:
         - name: core
@@ -39,9 +37,9 @@ spec:
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           envFrom:
           - configMapRef:
-              name: {{ template "bookinfo.core" . }}
+              name: {{ template "core.app" . }}
           ports:
-            - containerPort: {{ template "bookinfo.core.containerPort" . }}
+            - containerPort: {{ template "core.app.containerPort" . }}
           volumeMounts:
             - name: conf
               mountPath: /app/application.properties
@@ -49,7 +47,7 @@ spec:
       volumes:
         - name: conf
           configMap:
-            name: {{ template "bookinfo.core" . }}
+            name: {{ template "core.app" . }}
             items:
               - key: application.properties
                 path: application.properties

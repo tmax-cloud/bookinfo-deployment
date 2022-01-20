@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "bookinfo.order" . }}
+  name: {{ template "order.app" . }}
   labels:
-{{ include "bookinfo.labels" . | indent 4 }}
+{{ include "order.labels" . | indent 4 }}
 data:
   application.properties: |+
     spring.application.name=bookinfo-order
@@ -17,9 +17,9 @@ data:
     opentracing.jaeger.enable-b3-propagation=true
     opentracing.jaeger.log-spans=true
     logging.level.org.springframework.jdbc.core=DEBUG
-  SPRING_DATASOURCE_URL: {{ template "bookinfo.database.url" . }}/bookorder
-  SPRING_DATASOURCE_USERNAME: {{ template "bookinfo.database.username" . }}
-  SPRING_DATASOURCE_PASSWORD: {{ template "bookinfo.database.password" . }}
+  SPRING_DATASOURCE_URL: {{ template "order.database.url" . }}/bookorder
+  SPRING_DATASOURCE_USERNAME: {{ template "order.database.username" . }}
+  SPRING_DATASOURCE_PASSWORD: {{ template "order.database.password" . }}
   SPRING_KAFKA_BOOTSTRAP-SERVERS: {{ .Values.eventing.bootstrapServers }}
   OPENTRACING_JAEGER_HTTP-SENDER_URL: {{ .Values.trace.jaeger.httpSenderURL }}
   UPSTREAM_PAYMENT: {{ .Values.upstream.payment.url }}

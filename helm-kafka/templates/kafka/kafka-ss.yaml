@@ -10,14 +10,12 @@ spec:
   selector:
     matchLabels:
 {{ include "bookinfo.matchLabels" . | indent 6 }}
-      app: kafka
-      version: {{ .Values.kafka.image.tag }}
+      app: {{ template "bookinfo.kafka" . }}
   template:
     metadata:
       labels:
 {{ include "bookinfo.matchLabels" . | indent 8 }}
-        app: kafka
-        version: {{ .Values.kafka.image.tag }}
+        app: {{ template "bookinfo.kafka" . }}
     spec:
       containers:
         - name: kafka

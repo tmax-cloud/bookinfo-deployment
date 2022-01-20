@@ -10,6 +10,5 @@ spec:
       name: tcp-database
   selector:
 {{ include "rating.matchLabels" . | indent 4 }}
-    app: database
-    version: {{ .Values.database.image.tag }}
+    app: {{ template "rating.app" . }}
   clusterIP: None

@@ -1,25 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: {{ template "bookinfo.order" . }}
+  name: {{ template "order.app" . }}
   labels:
-{{ include "bookinfo.labels" . | indent 4 }}
+{{ include "order.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.order.replicas }}
   revisionHistoryLimit: {{ .Values.order.revisionHistoryLimit }}
   selector:
     matchLabels:
-{{ include "bookinfo.matchLabels" . | indent 6 }}
-      app: order
-      version: {{ .Values.order.image.tag }}
+{{ include "order.matchLabels" . | indent 6 }}
+      app: {{ template "order.app" . }}
   strategy:
     canary:
-      canaryService: {{ template "bookinfo.order" . }}-canary
-      stableService: {{ template "bookinfo.order" . }}
+      canaryService: {{ template "order.app" . }}-canary
+      stableService: {{ template "order.app" . }}-stable
       trafficRouting:
         istio:
           virtualService:
-            name: {{ template "bookinfo.order.virtualservice" . }}
+            name: {{ template "order.app" . }}
             routes:
               - orders
       steps:
@@ -29,9 +28,8 @@ spec:
   template:
     metadata:
       labels:
-{{ include "bookinfo.matchLabels" . | indent 8 }}
-        app: order
-        version: {{ .Values.order.image.tag }}
+{{ include "order.matchLabels" . | indent 8 }}
+        app: {{ template "order.app" . }}
     spec:
       containers:
         - name: order
@@ -39,9 +37,9 @@ spec:
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           envFrom:
           - configMapRef:
-              name: {{ template "bookinfo.order" . }}
+              name: {{ template "order.app" . }}
           ports:
-            - containerPort: {{ template "bookinfo.order.containerPort" . }}
+            - containerPort: {{ template "order.app.containerPort" . }}
           readinessProbe:
             httpGet:
               path: /actuator/health
@@ -53,7 +51,7 @@ spec:
       volumes:
         - name: conf
           configMap:
-            name: {{ template "bookinfo.order" . }}
+            name: {{ template "order.app" . }}
             items:
               - key: application.properties
                 path: application.properties

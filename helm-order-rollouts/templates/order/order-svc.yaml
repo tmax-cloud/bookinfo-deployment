@@ -1,31 +1,29 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "bookinfo.order" . }}
+  name: {{ template "order.app" . }}-stable
   labels:
-{{ include "bookinfo.labels" . | indent 4 }}
+{{ include "order.labels" . | indent 4 }}
 spec:
   ports:
-  - port: {{ template "bookinfo.order.servicePort" . }}
-    targetPort: {{ template "bookinfo.order.containerPort" . }}
+  - port: {{ template "order.app.servicePort" . }}
+    targetPort: {{ template "order.app.containerPort" . }}
     name: http-rest
   selector:
-{{ include "bookinfo.matchLabels" . | indent 4 }}
-    app: order
-    version: {{ .Values.order.image.tag }}
+{{ include "order.matchLabels" . | indent 4 }}
+    app: {{ template "order.app" . }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "bookinfo.order" . }}-canary
+  name: {{ template "order.app" . }}-canary
   labels:
-{{ include "bookinfo.labels" . | indent 4 }}
+{{ include "order.labels" . | indent 4 }}
 spec:
   ports:
-    - port: {{ template "bookinfo.order.servicePort" . }}
-      targetPort: {{ template "bookinfo.order.containerPort" . }}
+    - port: {{ template "order.app.servicePort" . }}
+      targetPort: {{ template "order.app.containerPort" . }}
       name: http-rest
   selector:
-{{ include "bookinfo.matchLabels" . | indent 4 }}
-    app: order
-    version: {{ .Values.order.image.tag }}
+{{ include "order.matchLabels" . | indent 4 }}
+    app: {{ template "order.app" . }}

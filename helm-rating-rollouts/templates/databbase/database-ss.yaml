@@ -10,14 +10,12 @@ spec:
   selector:
     matchLabels:
 {{ include "rating.matchLabels" . | indent 6 }}
-      app: database
-      version: {{ .Values.database.image.tag }}
+      app: {{ template "rating.app" . }}
   template:
     metadata:
       labels:
 {{ include "rating.matchLabels" . | indent 8 }}
-        app: database
-        version: {{ .Values.database.image.tag }}
+        app: {{ template "rating.app" . }}
     spec:
       securityContext:
         runAsUser: 999

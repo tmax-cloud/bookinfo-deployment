@@ -1,8 +1,8 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "bookinfo.name" -}}
-{{- default "bookinfo" .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- define "core.name" -}}
+{{- default "core" .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end }}
 
 {{/*
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "bookinfo.fullname" -}}
+{{- define "core.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,75 +26,67 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "bookinfo.chart" -}}
+{{- define "core.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "bookinfo.labels" -}}
-chart: "{{ template "bookinfo.chart" . }}"
+{{- define "core.labels" -}}
+chart: "{{ template "core.chart" . }}"
 release: "{{ .Release.Name }}"
 {{- end }}
 
 {{/* matchLabels */}}
-{{- define "bookinfo.matchLabels" -}}
-chart: "{{ template "bookinfo.chart" . }}"
+{{- define "core.matchLabels" -}}
+chart: "{{ template "core.chart" . }}"
 release: "{{ .Release.Name }}"
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "bookinfo.serviceAccountName" -}}
+{{- define "core.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "bookinfo.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "core.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
 
-{{- define "bookinfo.core" -}}
-  {{- printf "%s" (include "bookinfo.fullname" .) -}}
+{{- define "core.app" -}}
+  {{- printf "%s" (include "core.name" .) -}}
 {{- end -}}
 
-{{- define "bookinfo.database" -}}
-  {{- printf "%s-db" (include "bookinfo.core" .) -}}
+{{- define "core.database" -}}
+  {{- printf "%s-db" (include "core.app" .) -}}
 {{- end -}}
 
-{{- define "bookinfo.database.url" -}}
-  {{- printf "jdbc:postgresql://%s:5432" (include "bookinfo.database" .) -}}
+{{- define "core.app.containerPort" -}}
+  {{- printf "8080" -}}
 {{- end -}}
 
-{{- define "bookinfo.database.username" -}}
+{{- define "core.app.servicePort" -}}
+  {{- printf "8080" -}}
+{{- end -}}
+
+{{- define "core.database.containerPort" -}}
+  {{- printf "5432" -}}
+{{- end -}}
+
+{{- define "core.database.servicePort" -}}
+  {{- printf "5432" -}}
+{{- end -}}
+
+{{- define "core.database.url" -}}
+  {{- printf "jdbc:postgresql://%s:5432" (include "core.database" .) -}}
+{{- end -}}
+
+{{- define "core.database.username" -}}
   {{- printf "%s" "postgres" -}}
 {{- end -}}
 
-{{- define "bookinfo.database.password" -}}
+{{- define "core.database.password" -}}
   {{- printf "%s" "password" -}}
-{{- end -}}
-
-{{- define "bookinfo.core.containerPort" -}}
-  {{- printf "8080" -}}
-{{- end -}}
-
-{{- define "bookinfo.core.servicePort" -}}
-  {{- printf "8080" -}}
-{{- end -}}
-
-{{- define "bookinfo.database.containerPort" -}}
-  {{- printf "5432" -}}
-{{- end -}}
-
-{{- define "bookinfo.database.servicePort" -}}
-  {{- printf "5432" -}}
-{{- end -}}
-
-{{- define "bookinfo.core.virtualservice" -}}
-  {{- printf "%s-vs" (include "bookinfo.core" .) -}}
-{{- end -}}
-
-{{- define "bookinfo.database.virtualservice" -}}
-  {{- printf "%s-vs" (include "bookinfo.database" .) -}}
 {{- end -}}

@@ -9,7 +9,7 @@ upstream:
 order:
   image:
     repository: tmaxcloudck/bookinfo-order
-    tag: v0.0.4
+    tag: v0.0.5
   revisionHistoryLimit: 3
   serviceAccountName: ""
   replicas: 1
@@ -21,7 +21,7 @@ order:
 database:
   image:
     repository: tmaxcloudck/bookinfo-db
-    tag: v0.0.4
+    tag: v0.0.5
   nodeSelector: {}
   tolerations: []
   affinity: {}
