@@ -1,25 +1,25 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: {{ template "bookinfo.rating" . }}
+  name: {{ template "rating.app" . }}
   labels:
-{{ include "bookinfo.labels" . | indent 4 }}
+{{ include "rating.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.rating.replicas }}
   revisionHistoryLimit: {{ .Values.rating.revisionHistoryLimit }}
   selector:
     matchLabels:
-{{ include "bookinfo.matchLabels" . | indent 6 }}
-      app: rating
-      version: {{ .Values.rating.image.tag }}
+{{ include "rating.matchLabels" . | indent 6 }}
+      app: {{ template "rating.app" . }}
+      release: {{ .Release.Name }}
   strategy:
     canary:
-      canaryService: {{ template "bookinfo.rating" . }}-canary
-      stableService: {{ template "bookinfo.rating" . }}
+      canaryService: {{ template "rating.app" . }}-canary
+      stableService: {{ template "rating.app" . }}-stable
       trafficRouting:
         istio:
           virtualService:
-            name: {{ template "bookinfo.rating.virtualservice" . }}
+            name: {{ template "rating.app" . }}
             routes:
               - rating
       steps:
@@ -29,9 +29,9 @@ spec:
   template:
     metadata:
       labels:
-{{ include "bookinfo.matchLabels" . | indent 8 }}
-        app: rating
-        version: {{ .Values.rating.image.tag }}
+{{ include "rating.matchLabels" . | indent 8 }}
+        app: {{ template "rating.app" . }}
+        release: {{ .Release.Name }}
     spec:
       containers:
         - name: rating
@@ -39,9 +39,9 @@ spec:
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           envFrom:
             - configMapRef:
-                name: {{ template "bookinfo.rating" . }}
+                name: {{ template "rating.app" . }}
           ports:
-            - containerPort: {{ template "bookinfo.rating.containerPort" . }}
+            - containerPort: {{ template "rating.app.containerPort" . }}
           readinessProbe:
             httpGet:
               path: /actuator/health
@@ -53,7 +53,7 @@ spec:
       volumes:
         - name: conf
           configMap:
-            name: {{ template "bookinfo.rating" . }}
+            name: {{ template "rating.app" . }}
             items:
               - key: application.properties
                 path: application.properties

@@ -1,8 +1,8 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "bookinfo.name" -}}
-{{- default "bookinfo" .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- define "rating.name" -}}
+{{- default "rating" .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end }}
 
 {{/*
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "bookinfo.fullname" -}}
+{{- define "rating.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,75 +26,67 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "bookinfo.chart" -}}
+{{- define "rating.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "bookinfo.labels" -}}
-chart: "{{ template "bookinfo.chart" . }}"
+{{- define "rating.labels" -}}
+chart: "{{ template "rating.chart" . }}"
 release: "{{ .Release.Name }}"
 {{- end }}
 
 {{/* matchLabels */}}
-{{- define "bookinfo.matchLabels" -}}
-chart: "{{ template "bookinfo.chart" . }}"
+{{- define "rating.matchLabels" -}}
+chart: "{{ template "rating.chart" . }}"
 release: "{{ .Release.Name }}"
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "bookinfo.serviceAccountName" -}}
+{{- define "rating.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "bookinfo.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "rating.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
 
-{{- define "bookinfo.rating" -}}
-  {{- printf "%s" (include "bookinfo.fullname" .) -}}
+{{- define "rating.app" -}}
+  {{- printf "%s" (include "rating.name" .) -}}
 {{- end -}}
 
-{{- define "bookinfo.database" -}}
-  {{- printf "%s-db" (include "bookinfo.rating" .) -}}
+{{- define "rating.database" -}}
+  {{- printf "%s-db" (include "rating.app" .) -}}
 {{- end -}}
 
-{{- define "bookinfo.database.url" -}}
-  {{- printf "jdbc:postgresql://%s:5432" (include "bookinfo.database" .) -}}
+{{- define "rating.app.containerPort" -}}
+  {{- printf "8080" -}}
 {{- end -}}
 
-{{- define "bookinfo.database.username" -}}
+{{- define "rating.app.servicePort" -}}
+  {{- printf "8080" -}}
+{{- end -}}
+
+{{- define "rating.database.containerPort" -}}
+  {{- printf "5432" -}}
+{{- end -}}
+
+{{- define "rating.database.servicePort" -}}
+  {{- printf "5432" -}}
+{{- end -}}
+
+{{- define "rating.database.url" -}}
+  {{- printf "jdbc:postgresql://%s:5432" (include "rating.database" .) -}}
+{{- end -}}
+
+{{- define "rating.database.username" -}}
   {{- printf "%s" "postgres" -}}
 {{- end -}}
 
-{{- define "bookinfo.database.password" -}}
+{{- define "rating.database.password" -}}
   {{- printf "%s" "password" -}}
-{{- end -}}
-
-{{- define "bookinfo.rating.containerPort" -}}
-  {{- printf "8080" -}}
-{{- end -}}
-
-{{- define "bookinfo.rating.servicePort" -}}
-  {{- printf "8080" -}}
-{{- end -}}
-
-{{- define "bookinfo.database.containerPort" -}}
-  {{- printf "5432" -}}
-{{- end -}}
-
-{{- define "bookinfo.database.servicePort" -}}
-  {{- printf "5432" -}}
-{{- end -}}
-
-{{- define "bookinfo.rating.virtualservice" -}}
-  {{- printf "%s-vs" (include "bookinfo.rating" .) -}}
-{{- end -}}
-
-{{- define "bookinfo.database.virtualservice" -}}
-  {{- printf "%s-vs" (include "bookinfo.database" .) -}}
 {{- end -}}
