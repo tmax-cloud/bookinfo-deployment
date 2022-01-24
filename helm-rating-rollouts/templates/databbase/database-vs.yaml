@@ -1,17 +1,17 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: {{ template "bookinfo.database.virtualservice" . }}
+  name: {{ template "rating.database" . }}
   labels:
-{{ include "bookinfo.labels" . | indent 4 }}
+{{ include "rating.labels" . | indent 4 }}
 spec:
   hosts:
-    - {{ template "bookinfo.database" . }}
+    - {{ template "rating.database" . }}
   tcp:
     - match:
         - port: 5432
       route:
         - destination:
-            host: {{ template "bookinfo.database" . }}
+            host: {{ template "rating.database" . }}
             port:
               number: 5432

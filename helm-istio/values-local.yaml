@@ -6,13 +6,13 @@ externalDomain: bookinfo.192.168.0.102.nip.io
 
 upstream:
   core:
-    host: core-helm-core-rollouts-core
+    host: core-stable
     port: 8080
   rating:
-    host: rating-helm-rating-rollouts-rating
+    host: rating-stable
     port: 8080
   order:
-    host: order-helm-order-rollouts-order
+    host: order-stable
     port: 8080
   payment:
     host: "192.168.9.71.nip.io"

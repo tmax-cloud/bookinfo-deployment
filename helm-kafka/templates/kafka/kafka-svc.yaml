@@ -7,8 +7,7 @@ metadata:
 spec:
   selector:
 {{ include "bookinfo.matchLabels" . | indent 4 }}
-    app: kafka
-    version: {{ .Values.kafka.image.tag }}
+    app: {{ template "bookinfo.kafka" . }}
   ports:
     - port: {{ template "bookinfo.kafka.servicePort" . }}
       targetPort: {{ template "bookinfo.kafka.containerPort" . }}

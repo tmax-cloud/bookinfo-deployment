@@ -10,10 +10,15 @@ spec:
     namespace: {{ .Values.spec.destination.namespace }}
     server: {{ .Values.spec.destination.server }}
   project: {{ .Values.spec.project }}
+  syncPolicy:
+    automated:
+      prune: {{ .Values.spec.syncPolicy.automated.prune }}
+    syncOptions:
+      - CreateNamespace={{ .Values.spec.syncPolicy.syncOptions.createNamespace }}
   source:
     helm:
       valueFiles:
         - {{ .Values.spec.source.helm.valuesFileName }}
     path: helm-istio
-    repoURL: https://github.com/tmax-cloud/bookinfo-deployment.git
-    targetRevision: app-of-apps
+    repoURL: {{ .Values.spec.source.repoURL }}
+    targetRevision: {{ .Values.spec.source.targetRevision }}

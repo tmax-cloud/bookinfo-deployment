@@ -1,12 +1,12 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: {{ template "bookinfo.order.virtualservice" . }}
+  name: {{ template "order.app" . }}
   labels:
-{{ include "bookinfo.labels" . | indent 4 }}
+{{ include "order.labels" . | indent 4 }}
 spec:
   hosts:
-    - {{ template "bookinfo.order" . }}
+    - {{ template "order.app" . }}-stable
   http:
     - name: orders
       match:
@@ -14,12 +14,12 @@ spec:
             prefix: /api/orders
       route:
         - destination:
-            host: {{ template "bookinfo.order" . }}
+            host: {{ template "order.app" . }}-stable
             port:
               number: 8080
           weight: 100
         - destination:
-            host: {{ template "bookinfo.order" . }}-canary
+            host: {{ template "order.app" . }}-canary
             port:
               number: 8080
           weight: 0

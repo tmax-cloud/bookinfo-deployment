@@ -4,8 +4,8 @@
 
 rating:
   image:
-    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-rating
-    tag: v0.0.4
+    repository: tmaxcloudck/bookinfo-rating
+    tag: v0.0.5
   revisionHistoryLimit: 3
   serviceAccountName: ""
   replicas: 1
@@ -13,12 +13,12 @@ rating:
     canary:
       ratio: 50
       pause:
-        duration: 10m
+        duration: 12h
 
 database:
   image:
-    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-db
-    tag: v0.0.4
+    repository: tmaxcloudck/bookinfo-db
+    tag: v0.0.5
   nodeSelector: {}
   tolerations: []
   affinity: {}

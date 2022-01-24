@@ -4,12 +4,12 @@
 
 upstream:
   rating:
-    url: http://rating-helm-rating-rollouts-rating:8080
+    url: http://rating-stable:8080
 
 core:
   image:
-    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-core
-    tag: v0.0.4
+    repository: tmaxcloudck/bookinfo-core
+    tag: v0.0.5
   revisionHistoryLimit: 3
   serviceAccountName: ""
   replicas: 1
@@ -21,8 +21,8 @@ core:
 
 database:
   image:
-    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-db
-    tag: v0.0.4
+    repository: tmaxcloudck/bookinfo-db
+    tag: v0.0.5
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -30,7 +30,7 @@ database:
 imagePullPolicy: Always
 
 eventing:
-  bootstrapServers: "kafka-bookinfo-event-stream-kafka:9092"
+  bootstrapServers: "event-kafka:9092"
   consumer:
     groupId: "book"
 

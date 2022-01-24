@@ -1,31 +1,29 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "bookinfo.rating" . }}
+  name: {{ template "rating.app" . }}-stable
   labels:
-{{ include "bookinfo.labels" . | indent 4 }}
+{{ include "rating.labels" . | indent 4 }}
 spec:
   ports:
-  - port: {{ template "bookinfo.rating.servicePort" . }}
-    targetPort: {{ template "bookinfo.rating.containerPort" . }}
+  - port: {{ template "rating.app.servicePort" . }}
+    targetPort: {{ template "rating.app.containerPort" . }}
     name: http-rest
   selector:
-{{ include "bookinfo.matchLabels" . | indent 4 }}
-    app: rating
-    version: {{ .Values.rating.image.tag }}
+{{ include "rating.matchLabels" . | indent 4 }}
+    app: {{ template "rating.app" . }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "bookinfo.rating" . }}-canary
+  name: {{ template "rating.app" . }}-canary
   labels:
-{{ include "bookinfo.labels" . | indent 4 }}
+{{ include "rating.labels" . | indent 4 }}
 spec:
   ports:
-    - port: {{ template "bookinfo.rating.servicePort" . }}
-      targetPort: {{ template "bookinfo.rating.containerPort" . }}
+    - port: {{ template "rating.app.servicePort" . }}
+      targetPort: {{ template "rating.app.containerPort" . }}
       name: http-rest
   selector:
-{{ include "bookinfo.matchLabels" . | indent 4 }}
-    app: rating
-    version: {{ .Values.rating.image.tag }}
+{{ include "rating.matchLabels" . | indent 4 }}
+    app: {{ template "rating.app" . }}

@@ -1,8 +1,8 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "bookinfo.name" -}}
-{{- default "bookinfo" .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- define "order.name" -}}
+{{- default "order" .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end }}
 
 {{/*
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "bookinfo.fullname" -}}
+{{- define "order.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,75 +26,67 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "bookinfo.chart" -}}
+{{- define "order.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "bookinfo.labels" -}}
-chart: "{{ template "bookinfo.chart" . }}"
+{{- define "order.labels" -}}
+chart: "{{ template "order.chart" . }}"
 release: "{{ .Release.Name }}"
 {{- end }}
 
 {{/* matchLabels */}}
-{{- define "bookinfo.matchLabels" -}}
-chart: "{{ template "bookinfo.chart" . }}"
+{{- define "order.matchLabels" -}}
+chart: "{{ template "order.chart" . }}"
 release: "{{ .Release.Name }}"
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "bookinfo.serviceAccountName" -}}
+{{- define "order.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "bookinfo.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "order.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
 
-{{- define "bookinfo.order" -}}
-  {{- printf "%s-order" (include "bookinfo.fullname" .) -}}
+{{- define "order.app" -}}
+  {{- printf "%s" (include "order.name" .) -}}
 {{- end -}}
 
-{{- define "bookinfo.database" -}}
-  {{- printf "%s-db" (include "bookinfo.order" .) -}}
+{{- define "order.database" -}}
+  {{- printf "%s-db" (include "order.app" .) -}}
 {{- end -}}
 
-{{- define "bookinfo.database.url" -}}
-  {{- printf "jdbc:postgresql://%s:5432" (include "bookinfo.database" .) -}}
+{{- define "order.database.url" -}}
+  {{- printf "jdbc:postgresql://%s:5432" (include "order.database" .) -}}
 {{- end -}}
 
-{{- define "bookinfo.database.username" -}}
+{{- define "order.database.username" -}}
   {{- printf "%s" "postgres" -}}
 {{- end -}}
 
-{{- define "bookinfo.database.password" -}}
+{{- define "order.database.password" -}}
   {{- printf "%s" "password" -}}
 {{- end -}}
 
-{{- define "bookinfo.order.containerPort" -}}
+{{- define "order.app.containerPort" -}}
   {{- printf "8080" -}}
 {{- end -}}
 
-{{- define "bookinfo.order.servicePort" -}}
+{{- define "order.app.servicePort" -}}
   {{- printf "8080" -}}
 {{- end -}}
 
-{{- define "bookinfo.database.containerPort" -}}
+{{- define "order.database.containerPort" -}}
   {{- printf "5432" -}}
 {{- end -}}
 
-{{- define "bookinfo.database.servicePort" -}}
+{{- define "order.database.servicePort" -}}
   {{- printf "5432" -}}
-{{- end -}}
-
-{{- define "bookinfo.order.virtualservice" -}}
-  {{- printf "%s-vs" (include "bookinfo.order" .) -}}
-{{- end -}}
-
-{{- define "bookinfo.database.virtualservice" -}}
-  {{- printf "%s-vs" (include "bookinfo.database" .) -}}
 {{- end -}}

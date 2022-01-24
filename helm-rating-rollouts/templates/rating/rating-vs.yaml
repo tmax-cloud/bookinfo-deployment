@@ -1,12 +1,12 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: {{ template "bookinfo.rating.virtualservice" . }}
+  name: {{ template "rating.app" . }}
   labels:
-{{ include "bookinfo.labels" . | indent 4 }}
+{{ include "rating.labels" . | indent 4 }}
 spec:
   hosts:
-    - {{ template "bookinfo.rating" . }}
+    - {{ template "rating.app" . }}-stable
   http:
     - name: rating
       match:
@@ -14,12 +14,12 @@ spec:
             prefix: /api/rating
       route:
         - destination:
-            host: {{ template "bookinfo.rating" . }}
+            host: {{ template "rating.app" . }}-stable
             port:
               number: 8080
           weight: 100
         - destination:
-            host: {{ template "bookinfo.rating" . }}-canary
+            host: {{ template "rating.app" . }}-canary
             port:
               number: 8080
           weight: 0

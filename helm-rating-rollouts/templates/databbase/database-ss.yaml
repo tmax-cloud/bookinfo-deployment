@@ -1,23 +1,21 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ template "bookinfo.database" . }}
+  name: {{ template "rating.database" . }}
   labels:
-{{ include "bookinfo.labels" . | indent 4 }}
+{{ include "rating.labels" . | indent 4 }}
 spec:
   replicas: 1
-  serviceName: "{{ template "bookinfo.database" . }}"
+  serviceName: "{{ template "rating.database" . }}"
   selector:
     matchLabels:
-{{ include "bookinfo.matchLabels" . | indent 6 }}
-      app: database
-      version: {{ .Values.database.image.tag }}
+{{ include "rating.matchLabels" . | indent 6 }}
+      app: {{ template "rating.app" . }}
   template:
     metadata:
       labels:
-{{ include "bookinfo.matchLabels" . | indent 8 }}
-        app: database
-        version: {{ .Values.database.image.tag }}
+{{ include "rating.matchLabels" . | indent 8 }}
+        app: {{ template "rating.app" . }}
     spec:
       securityContext:
         runAsUser: 999
@@ -59,7 +57,7 @@ spec:
     - metadata:
         name: "database-data"
         labels:
-{{ include "bookinfo.labels" . | indent 10 }}
+{{ include "rating.labels" . | indent 10 }}
       spec:
         accessModes: [{{ .Values.persistence.persistentVolumeClaim.database.accessMode | quote }}]
         {{- if .Values.persistence.persistentVolumeClaim.database.storageClass }}

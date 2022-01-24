@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "bookinfo.rating" . }}
+  name: {{ template "rating.app" . }}
   labels:
-{{ include "bookinfo.labels" . | indent 4 }}
+{{ include "rating.labels" . | indent 4 }}
 data:
   application.properties: |+
     spring.application.name=bookinfo-rating
@@ -17,7 +17,7 @@ data:
     opentracing.jaeger.enable-b3-propagation=true
     opentracing.jaeger.log-spans=true
     logging.level.org.springframework.jdbc.rating=DEBUG
-  SPRING_DATASOURCE_URL: {{ template "bookinfo.database.url" . }}/bookrating
-  SPRING_DATASOURCE_USERNAME: {{ template "bookinfo.database.username" . }}
-  SPRING_DATASOURCE_PASSWORD: {{ template "bookinfo.database.password" . }}
+  SPRING_DATASOURCE_URL: {{ template "rating.database.url" . }}/bookrating
+  SPRING_DATASOURCE_USERNAME: {{ template "rating.database.username" . }}
+  SPRING_DATASOURCE_PASSWORD: {{ template "rating.database.password" . }}
   OPENTRACING_JAEGER_HTTP-SENDER_URL: {{ .Values.trace.jaeger.httpSenderURL }}

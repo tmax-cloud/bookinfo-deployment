@@ -4,8 +4,8 @@
 
 zookeeper:
   image:
-    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo-3rd-party/zookeeper
-    tag: 3.4.6
+    repository: bitnami/zookeeper
+    tag: 3.5.9
   resources:
     requests:
       cpu: 250m
@@ -16,8 +16,8 @@ zookeeper:
 
 kafka:
   image:
-    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo-3rd-party/kafka
-    tag: 2.12-2.0.1
+    repository: bitnami/kafka
+    tag: 3.0.0
   resources:
     requests:
       cpu: 250m
@@ -28,7 +28,7 @@ kafka:
 
 kubectl:
   image:
-    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo-3rd-party/kubectl
+    repository: docker.io/bitnami/kubectl
     tag: 1.20.10
 
 persistence:

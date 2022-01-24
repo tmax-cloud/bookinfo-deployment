@@ -9,7 +9,7 @@ upstream:
 order:
   image:
     repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-order
-    tag: v0.0.4
+    tag: v0.0.5
   revisionHistoryLimit: 3
   serviceAccountName: ""
   replicas: 1
@@ -22,7 +22,7 @@ order:
 database:
   image:
     repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-db
-    tag: v0.0.4
+    tag: v0.0.5
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -30,7 +30,7 @@ database:
 imagePullPolicy: Always
 
 eventing:
-  bootstrapServers: "kafka-bookinfo-event-stream-kafka:9092"
+  bootstrapServers: "event-kafka:9092"
 
 persistence:
   enabled: true
