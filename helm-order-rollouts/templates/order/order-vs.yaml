@@ -6,7 +6,7 @@ metadata:
 {{ include "order.labels" . | indent 4 }}
 spec:
   hosts:
-    - {{ template "order.app" . }}
+    - {{ template "order.app" . }}-stable
   http:
     - name: orders
       match:

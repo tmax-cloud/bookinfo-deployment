@@ -6,7 +6,7 @@ metadata:
 {{ include "rating.labels" . | indent 4 }}
 spec:
   hosts:
-    - {{ template "rating.app" . }}
+    - {{ template "rating.app" . }}-stable
   http:
     - name: rating
       match:

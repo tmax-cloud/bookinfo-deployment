@@ -6,7 +6,7 @@ metadata:
 {{ include "core.labels" . | indent 4 }}
 spec:
   hosts:
-    - {{ template "core.app" . }}
+    - {{ template "core.app" . }}-stable
   http:
     - name: core
       match:
