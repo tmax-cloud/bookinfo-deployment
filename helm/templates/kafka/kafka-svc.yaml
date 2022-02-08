@@ -1,0 +1,18 @@
+{{- if eq .Values.eventing.type "internal" -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "bookinfo.kafka" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  selector:
+{{ include "bookinfo.matchLabels" . | indent 4 }}
+    app: kafka
+    version: {{ .Values.eventing.internal.kafka.image.tag }}
+  ports:
+    - port: {{ template "bookinfo.kafka.servicePort" . }}
+      targetPort: {{ template "bookinfo.kafka.containerPort" . }}
+      name: tcp-kafka
+  clusterIP: None
+{{- end -}}

@@ -1,0 +1,122 @@
+# Default values for helm-core.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+externalDomain: bookinfo.192.168.0.102.nip.io
+
+upstream:
+  paymentURL: "http://192.168.9.71.nip.io"
+
+istio:
+  ingressGateway:
+    selector:
+      key: app
+      value: istio-ingressgateway
+  egressGateway:
+    selector:
+      key: app
+      value: istio-egressgateway
+    hostname: istio-egressgateway.istio-system.svc.cluster.local
+
+eventing:
+  type: internal
+  internal:
+    kubectl:
+      image:
+        repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo-3rd-party/kubectl
+        tag: 1.20.10
+    zookeeper:
+      image:
+        repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo-3rd-party/zookeeper
+        tag: 3.4.6
+      resources:
+        requests:
+          cpu: 250m
+          memory: 750m
+        limits:
+          cpu: 1
+          memory: 2Gi
+    kafka:
+      image:
+        repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo-3rd-party/kafka
+        tag: 2.12-2.0.1
+      resources:
+        requests:
+          cpu: 250m
+          memory: 750m
+        limits:
+          cpu: 1
+          memory: 2Gi
+  external:
+    kafka:
+      bootstrapServers: ""
+      consumer:
+        groupId: ""
+
+trace:
+  jaeger:
+    httpSenderURL: "http://jaeger-collector.istio-system:14268/api/traces"
+
+core:
+  image:
+    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-core
+    tag: v0.0.4
+  revisionHistoryLimit: 3
+  serviceAccountName: ""
+  replicas: 1
+  rolloutPolicy:
+    canary:
+      ratio: 50
+
+rating:
+  image:
+    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-rating
+    tag: v0.0.4
+  revisionHistoryLimit: 3
+  serviceAccountName: ""
+  replicas: 1
+  rolloutPolicy:
+    canary:
+      ratio: 50
+
+order:
+  image:
+    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-order
+    tag: v0.0.4
+  revisionHistoryLimit: 3
+  serviceAccountName: ""
+  replicas: 1
+  rolloutPolicy:
+    canary:
+      ratio: 50
+
+database:
+  image:
+    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-db
+    tag: v0.0.4
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+persistence:
+  enabled: true
+  # Setting it to "keep" to avoid removing PVCs during a helm delete
+  # operation. Leaving it empty will delete PVCs after the chart deleted
+  # (this does not apply for PVCs that are created for internal database
+  # and redis components, i.e. they are never deleted automatically)
+  resourcePolicy: "keep"
+  persistentVolumeClaim:
+    database:
+      existingClaim: ""
+      storageClass: "rook-cephfs"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 1Gi
+    kafka:
+      existingClaim: ""
+      storageClass: "rook-cephfs"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 10Gi
+
+imagePullPolicy: Always
