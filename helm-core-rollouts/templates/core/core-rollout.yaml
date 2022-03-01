@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: {{ template "core.app" . }}-rollout
+  name: {{ template "core.app" . }}
   labels:
 {{ include "core.labels" . | indent 4 }}
 spec:
