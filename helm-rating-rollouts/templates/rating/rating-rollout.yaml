@@ -14,14 +14,16 @@ spec:
       release: {{ .Release.Name }}
   strategy:
     canary:
-      canaryService: {{ template "rating.app" . }}-canary
-      stableService: {{ template "rating.app" . }}-stable
       trafficRouting:
         istio:
           virtualService:
-            name: {{ template "rating.app" . }}
+            name: {{ template "rating.app" . }}-vs
             routes:
-              - rating
+              - {{ template "rating.app" . }}-route1
+          destinationRule:
+            name: {{ template "rating.app" . }}-destrule
+            canarySubsetName: canary
+            stableSubsetName: stable
       steps:
         - setWeight: {{ .Values.rating.rolloutPolicy.canary.ratio }}
         - pause:
@@ -39,7 +41,7 @@ spec:
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           envFrom:
             - configMapRef:
-                name: {{ template "rating.app" . }}
+                name: {{ template "rating.app" . }}-config
           ports:
             - containerPort: {{ template "rating.app.containerPort" . }}
           readinessProbe:
@@ -53,7 +55,7 @@ spec:
       volumes:
         - name: conf
           configMap:
-            name: {{ template "rating.app" . }}
+            name: {{ template "rating.app" . }}-config
             items:
               - key: application.properties
                 path: application.properties

@@ -1,25 +1,29 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: {{ template "core.app" . }}
+  name: {{ template "core.app" . }}-vs
   labels:
 {{ include "core.labels" . | indent 4 }}
 spec:
   hosts:
-    - {{ template "core.app" . }}-stable
+    - {{ .Values.externalDomain }}
+  gateways:
+    - {{ .Values.ingressGateway }}
   http:
-    - name: core
+    - name: {{ template "core.app" . }}-route1
       match:
         - uri:
             prefix: /api/books
       route:
         - destination:
-            host: {{ template "core.app" . }}-stable
+            host: {{ template "core.app" . }}-svc
+            subset: stable
             port:
               number: 8080
           weight: 100
         - destination:
-            host: {{ template "core.app" . }}-canary
+            host: {{ template "core.app" . }}-svc
+            subset: canary
             port:
               number: 8080
           weight: 0

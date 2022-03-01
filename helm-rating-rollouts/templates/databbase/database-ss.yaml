@@ -6,7 +6,7 @@ metadata:
 {{ include "rating.labels" . | indent 4 }}
 spec:
   replicas: 1
-  serviceName: "{{ template "rating.database" . }}"
+  serviceName: "{{ template "rating.database" . }}-svc"
   selector:
     matchLabels:
 {{ include "rating.matchLabels" . | indent 6 }}

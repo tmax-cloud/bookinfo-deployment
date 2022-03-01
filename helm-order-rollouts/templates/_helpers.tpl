@@ -64,7 +64,7 @@ Create the name of the service account to use
 {{- end -}}
 
 {{- define "order.database.url" -}}
-  {{- printf "jdbc:postgresql://%s:5432" (include "order.database" .) -}}
+  {{- printf "jdbc:postgresql://%s-svc:5432" (include "order.database" .) -}}
 {{- end -}}
 
 {{- define "order.database.username" -}}

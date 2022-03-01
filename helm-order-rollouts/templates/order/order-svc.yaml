@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "order.app" . }}-stable
+  name: {{ template "order.app" . }}-svc
   labels:
 {{ include "order.labels" . | indent 4 }}
 spec:
@@ -9,21 +9,6 @@ spec:
   - port: {{ template "order.app.servicePort" . }}
     targetPort: {{ template "order.app.containerPort" . }}
     name: http-rest
-  selector:
-{{ include "order.matchLabels" . | indent 4 }}
-    app: {{ template "order.app" . }}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ template "order.app" . }}-canary
-  labels:
-{{ include "order.labels" . | indent 4 }}
-spec:
-  ports:
-    - port: {{ template "order.app.servicePort" . }}
-      targetPort: {{ template "order.app.containerPort" . }}
-      name: http-rest
   selector:
 {{ include "order.matchLabels" . | indent 4 }}
     app: {{ template "order.app" . }}

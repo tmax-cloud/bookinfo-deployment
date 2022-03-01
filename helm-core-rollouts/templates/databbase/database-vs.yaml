@@ -1,17 +1,17 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: {{ template "core.database" . }}
+  name: {{ template "core.database" . }}-vs
   labels:
 {{ include "core.labels" . | indent 4 }}
 spec:
   hosts:
-    - {{ template "core.database" . }}
+    - {{ template "core.database" . }}-svc
   tcp:
     - match:
         - port: 5432
       route:
         - destination:
-            host: {{ template "core.database" . }}
+            host: {{ template "core.database" . }}-svc
             port:
               number: 5432

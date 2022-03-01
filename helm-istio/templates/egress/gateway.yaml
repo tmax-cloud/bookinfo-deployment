@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: {{ template "bookinfo.istio.egressGateway" . }}
+  name: bookinfo-egress-gateway
   labels:
 {{ include "bookinfo.labels" . | indent 4 }}
 spec:

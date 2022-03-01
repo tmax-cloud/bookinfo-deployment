@@ -80,7 +80,7 @@ Create the name of the service account to use
 {{- end -}}
 
 {{- define "rating.database.url" -}}
-  {{- printf "jdbc:postgresql://%s:5432" (include "rating.database" .) -}}
+  {{- printf "jdbc:postgresql://%s-svc:5432" (include "rating.database" .) -}}
 {{- end -}}
 
 {{- define "rating.database.username" -}}

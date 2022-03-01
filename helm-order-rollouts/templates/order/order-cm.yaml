@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "order.app" . }}
+  name: {{ template "order.app" . }}-config
   labels:
 {{ include "order.labels" . | indent 4 }}
 data:

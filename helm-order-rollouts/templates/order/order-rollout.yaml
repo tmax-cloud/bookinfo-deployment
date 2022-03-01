@@ -13,14 +13,16 @@ spec:
       app: {{ template "order.app" . }}
   strategy:
     canary:
-      canaryService: {{ template "order.app" . }}-canary
-      stableService: {{ template "order.app" . }}-stable
       trafficRouting:
         istio:
           virtualService:
-            name: {{ template "order.app" . }}
+            name: {{ template "order.app" . }}-vs
             routes:
-              - orders
+              - {{ template "order.app" . }}-route1
+          destinationRule:
+            name: {{ template "order.app" . }}-destrule
+            canarySubsetName: canary
+            stableSubsetName: stable
       steps:
         - setWeight: {{ .Values.order.rolloutPolicy.canary.ratio }}
         - pause:
@@ -37,7 +39,7 @@ spec:
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           envFrom:
           - configMapRef:
-              name: {{ template "order.app" . }}
+              name: {{ template "order.app" . }}-config
           ports:
             - containerPort: {{ template "order.app.containerPort" . }}
           readinessProbe:
@@ -51,7 +53,7 @@ spec:
       volumes:
         - name: conf
           configMap:
-            name: {{ template "order.app" . }}
+            name: {{ template "order.app" . }}-config
             items:
               - key: application.properties
                 path: application.properties

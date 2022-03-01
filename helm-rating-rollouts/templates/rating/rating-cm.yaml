@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "rating.app" . }}
+  name: {{ template "rating.app" . }}-config
   labels:
 {{ include "rating.labels" . | indent 4 }}
 data:

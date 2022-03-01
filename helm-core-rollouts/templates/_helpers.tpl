@@ -80,7 +80,7 @@ Create the name of the service account to use
 {{- end -}}
 
 {{- define "core.database.url" -}}
-  {{- printf "jdbc:postgresql://%s:5432" (include "core.database" .) -}}
+  {{- printf "jdbc:postgresql://%s-svc:5432" (include "core.database" .) -}}
 {{- end -}}
 
 {{- define "core.database.username" -}}

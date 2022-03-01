@@ -6,7 +6,7 @@ metadata:
 {{ include "core.labels" . | indent 4 }}
 spec:
   replicas: 1
-  serviceName: "{{ template "core.database" . }}"
+  serviceName: "{{ template "core.database" . }}-svc"
   selector:
     matchLabels:
 {{ include "core.matchLabels" . | indent 6 }}

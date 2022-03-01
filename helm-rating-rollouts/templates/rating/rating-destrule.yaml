@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ template "rating.app" . }}-destrule
+spec:
+  host: {{ template "rating.app" . }}-svc
+  subsets:
+    - name: canary   # referenced in canary.trafficRouting.istio.destinationRule.canarySubsetName
+      labels:        # labels will be injected with canary ratings-pod-template-hash value
+{{ include "rating.matchLabels" . | indent 8 }}
+        app: {{ template "rating.app" . }}
+    - name: stable   # referenced in canary.trafficRouting.istio.destinationRule.stableSubsetName
+      labels:        # labels will be injected with stable ratings-pod-template-hash value
+{{ include "rating.matchLabels" . | indent 8 }}
+        app: {{ template "rating.app" . }}

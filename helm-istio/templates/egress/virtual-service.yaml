@@ -8,11 +8,11 @@ spec:
   hosts:
     - {{ .Values.upstream.payment.host }}
   gateways:
-    - {{ template "bookinfo.istio.egressGateway" . }}
+    - bookinfo-egress-gateway
   http:
     - match:
         - gateways:
-            - {{ template "bookinfo.istio.egressGateway" . }}
+            - bookinfo-egress-gateway
           port: 80
       route:
         - destination:

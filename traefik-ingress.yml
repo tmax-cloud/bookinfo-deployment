@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bookinfo-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+spec:
+  ingressClassName: tmax-cloud
+  rules:
+  - host: bookinfo.192.168.0.101.nip.io
+    http:
+      paths:
+      - path: /api/books
+        pathType: Prefix
+        backend:
+          service:
+            name: core-stable
+            port:
+              number: 8080
+    http:
+      paths:
+      - path: /api/rating
+        pathType: Prefix
+        backend:
+          service:
+            name: rating-stable
+            port:
+              number: 8080
+    http:
+      paths:
+      - path: /api/orders
+        pathType: Prefix
+        backend:
+          service:
+            name: order-stable
+            port:
+              number: 8080

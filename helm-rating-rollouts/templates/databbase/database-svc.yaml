@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "rating.database" . }}
+  name: {{ template "rating.database" . }}-svc
   labels:
 {{ include "rating.labels" . | indent 4 }}
 spec:
