@@ -14,24 +14,20 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: core-stable
+            name: core-svc
             port:
               number: 8080
-    http:
-      paths:
       - path: /api/rating
         pathType: Prefix
         backend:
           service:
-            name: rating-stable
+            name: rating-svc
             port:
               number: 8080
-    http:
-      paths:
       - path: /api/orders
         pathType: Prefix
         backend:
           service:
-            name: order-stable
+            name: order-svc
             port:
               number: 8080
