@@ -8,7 +8,7 @@ ingressGateway: bookinfo-ingress-gateway
 rating:
   image:
     repository: tmaxcloudck/bookinfo-rating
-    tag: v0.0.5
+    tag: avg
   revisionHistoryLimit: 3
   serviceAccountName: ""
   replicas: 1
