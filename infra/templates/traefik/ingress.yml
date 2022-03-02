@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bookinfo-ingress
+  annotations:
+{{ toYaml .Values.traefik.annotations | indent 6 }}
+spec:
+  ingressClassName: {{ .Values.traefik.className }}
+  rules:
+  - host: {{ .Values.traefik.externalDomain }}
+    http:
+      paths:
+      - path: /api/books
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.services.core.host }}
+            port:
+              number: {{ .Values.services.core.port }}
+      - path: /api/rating
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.services.rating.host }}
+            port:
+              number: {{ .Values.services.rating.port }}
+      - path: /api/orders
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.services.order.host }}
+            port:
+              number: {{ .Values.services.order.port }}

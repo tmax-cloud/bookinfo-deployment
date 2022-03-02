@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ template "bookinfo.payment.virtualservice" . }}
+  labels:
+{{ include "bookinfo.labels" . | indent 4 }}
+spec:
+  hosts:
+    - {{ .Values.services.payment.host }}
+  gateways:
+    - mesh
+  http:
+    - match:
+        - gateways:
+            - mesh
+          port: 80
+      route:
+        - destination:
+            host: {{ .Values.istio.egressGateway.hostname }}
+            subset: payment
+            port:
+              number: 80
