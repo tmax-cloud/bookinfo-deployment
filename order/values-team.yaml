@@ -2,6 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+externalDomain: bookinfo.192.168.0.102.nip.io
+ingressGateway: bookinfo-ingress-gateway
+
 upstream:
   payment:
     url: http://192.168.9.71.nip.io
@@ -30,7 +33,7 @@ database:
 imagePullPolicy: Always
 
 eventing:
-  bootstrapServers: "event-kafka:9092"
+  bootstrapServers: "infra-kafka:9092"
 
 persistence:
   enabled: true

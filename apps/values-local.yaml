@@ -16,4 +16,4 @@ spec:
     helm:
       valuesFileName: values-local.yaml
     repoURL: https://github.com/taejune/bookinfo-deployment.git
-    targetRevision: destination-rule
+    targetRevision: traefik

@@ -2,22 +2,27 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-externalDomain: bookinfo.172.22.11.21.nip.io
-
-upstream:
+services:
   core:
-    host: core
+    host: core-svc
     port: 8080
   rating:
-    host: rating
+    host: rating-svc
     port: 8080
   order:
-    host: order
+    host: order-svc
     port: 8080
   payment:
     host: "192.168.9.71.nip.io"
 
+traefik:
+  externalDomain: bookinfo.172.22.11.18.nip.io
+  className: tmax-cloud
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+
 istio:
+  externalDomain: bookinfo.172.22.11.21.nip.io
   ingressGateway:
     selector:
       key: app
@@ -27,3 +32,51 @@ istio:
       key: app
       value: istio-egressgateway
     hostname: istio-egressgateway.istio-system.svc.cluster.local
+
+# Default values for helm-core.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+zookeeper:
+  image:
+    repository: bitnami/zookeeper
+    tag: 3.5.9
+  resources:
+    requests:
+      cpu: 250m
+      memory: 750Mi
+    limits:
+      cpu: 1
+      memory: 2Gi
+
+kafka:
+  image:
+    repository: bitnami/kafka
+    tag: 3.0.0
+  resources:
+    requests:
+      cpu: 250m
+      memory: 750Mi
+    limits:
+      cpu: 1
+      memory: 2Gi
+
+kubectl:
+  image:
+    repository: docker.io/bitnami/kubectl
+    tag: 1.20.10
+
+persistence:
+  enabled: true
+  # Setting it to "keep" to avoid removing PVCs during a helm delete
+  # operation. Leaving it empty will delete PVCs after the chart deleted
+  # (this does not apply for PVCs that are created for internal database
+  # and redis components, i.e. they are never deleted automatically)
+  resourcePolicy: "keep"
+  persistentVolumeClaim:
+    kafka:
+      existingClaim: ""
+      storageClass: "rook-cephfs"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 10Gi

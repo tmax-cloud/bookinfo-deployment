@@ -2,6 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+externalDomain: bookinfo.192.168.0.102.nip.io
+ingressGateway: bookinfo-ingress-gateway
+
 rating:
   image:
     repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo/bookinfo-rating
