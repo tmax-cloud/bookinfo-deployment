@@ -19,7 +19,7 @@ traefik:
   externalDomain: bookinfo.192.168.0.101.nip.io
   className: tmax-cloud
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.entrypoints: web
 
 istio:
   externalDomain: bookinfo.192.168.0.102.nip.io
