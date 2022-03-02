@@ -32,7 +32,7 @@ database:
 imagePullPolicy: Always
 
 eventing:
-  bootstrapServers: "event-kafka:9092"
+  bootstrapServers: "infra-kafka:9092"
 
 persistence:
   enabled: true

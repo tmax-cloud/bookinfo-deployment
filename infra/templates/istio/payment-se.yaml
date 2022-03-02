@@ -6,7 +6,7 @@ metadata:
 {{ include "bookinfo.labels" . | indent 4 }}
 spec:
   hosts:
-    - {{ .Values.upstream.payment.host }}
+    - {{ .Values.services.payment.host }}
   location: MESH_EXTERNAL
   ports:
     - name: http

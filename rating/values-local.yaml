@@ -5,13 +5,9 @@
 externalDomain: bookinfo.192.168.0.102.nip.io
 ingressGateway: bookinfo-ingress-gateway
 
-upstream:
-  rating:
-    url: http://rating-svc:8080
-
-core:
+rating:
   image:
-    repository: tmaxcloudck/bookinfo-core
+    repository: tmaxcloudck/bookinfo-rating
     tag: v0.0.5
   revisionHistoryLimit: 3
   serviceAccountName: ""
@@ -20,7 +16,7 @@ core:
     canary:
       ratio: 50
       pause:
-        duration: 10m
+        duration: 12h
 
 database:
   image:
@@ -31,11 +27,6 @@ database:
   affinity: {}
 
 imagePullPolicy: Always
-
-eventing:
-  bootstrapServers: "event-kafka:9092"
-  consumer:
-    groupId: "book"
 
 persistence:
   enabled: true

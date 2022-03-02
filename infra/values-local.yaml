@@ -2,33 +2,63 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+externalDomain: bookinfo.192.168.0.102.nip.io
+
+services:
+  core:
+    host: core-vs
+    port: 8080
+  rating:
+    host: rating-vs
+    port: 8080
+  order:
+    host: order-vs
+    port: 8080
+  payment:
+    host: "192.168.9.71.nip.io"
+
+istio:
+  ingressGateway:
+    selector:
+      key: app
+      value: istio-ingressgateway
+  egressGateway:
+    selector:
+      key: app
+      value: istio-egressgateway
+    hostname: istio-egressgateway.istio-system.svc.cluster.local
+
+# Default values for helm-core.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
 zookeeper:
   image:
-    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo-3rd-party/zookeeper
-    tag: 3.4.6
+    repository: bitnami/zookeeper
+    tag: 3.5.9
   resources:
     requests:
       cpu: 250m
-      memory: 750m
+      memory: 750Mi
     limits:
       cpu: 1
       memory: 2Gi
 
 kafka:
   image:
-    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo-3rd-party/kafka
-    tag: 2.12-2.0.1
+    repository: bitnami/kafka
+    tag: 3.0.0
   resources:
     requests:
       cpu: 250m
-      memory: 750m
+      memory: 750Mi
     limits:
       cpu: 1
       memory: 2Gi
 
 kubectl:
   image:
-    repository: core.hr.172.22.11.16.nip.io/shinhan-bookinfo-3rd-party/kubectl
+    repository: docker.io/bitnami/kubectl
     tag: 1.20.10
 
 persistence:
@@ -41,7 +71,7 @@ persistence:
   persistentVolumeClaim:
     kafka:
       existingClaim: ""
-      storageClass: "csi-cephfs-sc"
+      storageClass: "rook-cephfs"
       subPath: ""
       accessMode: ReadWriteOnce
       size: 10Gi

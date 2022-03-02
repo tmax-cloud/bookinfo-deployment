@@ -96,7 +96,7 @@ Create the name of the service account to use
 {{- end -}}
 
 {{- define "bookinfo.istio.destRule.canaryName" -}}
-  {{- printf "%s" "cannary" -}}
+  {{- printf "%s" "canary" -}}
 {{- end -}}
 
 {{- define "bookinfo.core" -}}
@@ -157,4 +157,40 @@ Create the name of the service account to use
 
 {{- define "bookinfo.payment.destinationRule" -}}
   {{- printf "%s-dest-rule" (include "bookinfo.payment" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.zookeeper" -}}
+  {{- printf "%s-zookeeper" (include "bookinfo.fullname" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.kafka" -}}
+  {{- printf "%s-kafka" (include "bookinfo.fullname" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.zookeeper.containerPort" -}}
+  {{- printf "2181" -}}
+{{- end -}}
+
+{{- define "bookinfo.zookeeper.servicePort" -}}
+  {{- printf "2181" -}}
+{{- end -}}
+
+{{- define "bookinfo.kafka.containerPort" -}}
+  {{- printf "9092" -}}
+{{- end -}}
+
+{{- define "bookinfo.kafka.servicePort" -}}
+  {{- printf "9092" -}}
+{{- end -}}
+
+{{- define "bookinfo.kafka.advertisedListners" -}}
+  {{- printf "INSIDE://%s:%s" (include "bookinfo.kafka" .) (include "bookinfo.kafka.containerPort" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.kafka.listners" -}}
+  {{- printf "INSIDE://0.0.0.0:%s"  (include "bookinfo.kafka.containerPort" .) -}}
+{{- end -}}
+
+{{- define "bookinfo.zookeeperURL" -}}
+  {{- printf "%s:%s" (include "bookinfo.zookeeper" .) (include "bookinfo.zookeeper.containerPort" .) -}}
 {{- end -}}
